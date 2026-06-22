@@ -1,0 +1,21 @@
+{
+  "name": "cloudflare-introduction-handson-site",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "sync-lectures": "node scripts/sync-lectures.mjs",
+    "predev": "node scripts/sync-lectures.mjs",
+    "prebuild": "node scripts/sync-lectures.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.40.0",
+    "astro": "^6.4.8",
+    "sharp": "^0.35.2"
+  }
+}

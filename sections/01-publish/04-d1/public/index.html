@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ひとことボード</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>ひとことボード</h1>
+      <p class="lead">投稿が D1（データベース）に保存されます。</p>
+    </header>
+
+    <main class="container">
+      <form class="post-form" id="post-form">
+        <input type="text" name="name" placeholder="なまえ" maxlength="20" required />
+        <input type="text" name="body" placeholder="ひとこと" maxlength="100" required />
+        <button type="submit">投稿</button>
+      </form>
+
+      <p class="note" id="note" hidden></p>
+
+      <ul class="message-list" id="message-list"></ul>
+    </main>
+
+    <footer class="footer">
+      <p>Cloudflare 公開・運用ハンズオン</p>
+    </footer>
+
+    <script>
+      // ローカルの Worker。公開後はデプロイで表示された Worker の URL に書き換える。
+      const API_BASE = 'http://localhost:8787';
+
+      const list = document.getElementById('message-list');
+      const form = document.getElementById('post-form');
+      const note = document.getElementById('note');
+
+      function showNote(text) {
+        note.textContent = text;
+        note.hidden = false;
+      }
+
+      function renderMessages(messages) {
+        list.innerHTML = '';
+        for (const m of messages) {
+          const li = document.createElement('li');
+          li.className = 'message';
+          const name = document.createElement('span');
+          name.className = 'message-name';
+          name.textContent = m.name;
+          const body = document.createElement('span');
+          body.className = 'message-body';
+          body.textContent = m.body;
+          li.append(name, body);
+          list.appendChild(li);
+        }
+      }
+
+      async function loadMessages() {
+        try {
+          const res = await fetch(`${API_BASE}/api/messages`);
+          renderMessages(await res.json());
+        } catch (e) {
+          showNote('API に接続できませんでした。Worker（npm run dev）が起動しているか確認してください。');
+        }
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = form.name.value.trim();
+        const body = form.body.value.trim();
+        const res = await fetch(`${API_BASE}/api/messages`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, body }),
+        });
+        if (!res.ok) {
+          showNote('投稿に失敗しました。');
+          return;
+        }
+        form.reset();
+        note.hidden = true;
+        // 保存されたので、サーバーから取り直して最新の一覧を表示する。
+        await loadMessages();
+      });
+
+      loadMessages();
+    </script>
+  </body>
+</html>

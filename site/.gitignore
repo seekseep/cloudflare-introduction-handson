@@ -1,0 +1,10 @@
+# build output
+dist/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# generated docs pages (sync-lectures.mjs writes here)
+src/content/docs/
+# misc
+.DS_Store

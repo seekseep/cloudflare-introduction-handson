@@ -1,0 +1,17 @@
+{
+  "name": "01-publish-03-workers",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "front": "wrangler pages dev ./public --port 8788"
+  },
+  "dependencies": {
+    "hono": "^4.7.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}

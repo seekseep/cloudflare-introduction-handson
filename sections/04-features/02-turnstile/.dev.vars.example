@@ -1,0 +1,6 @@
+# ローカル開発用のシークレット。このファイルを .dev.vars にコピーして使う。
+# .dev.vars は .gitignore 済み（コミットしない）。
+#
+# 下記は Turnstile の「常に成功する」テスト用 secret。
+# 本番では自分の Turnstile ウィジェットの secret を `wrangler secret put TURNSTILE_SECRET` で登録する。
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA

@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "r2-demo",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-01",
+  "assets": { "directory": "./public" },
+  "observability": { "enabled": true },
+  // R2 バケットの binding。bucket_name は `wrangler r2 bucket create handson-uploads` で作った名前。
+  // ローカル開発（wrangler dev）では実バケットがなくてもローカルに保存されて動く。
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "handson-uploads"
+    }
+  ]
+}

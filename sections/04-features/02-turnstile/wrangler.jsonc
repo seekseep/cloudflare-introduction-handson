@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "turnstile-demo",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-01",
+  // 静的アセット（public/）を同じ Worker から配信する。
+  // GET / は public/index.html を返し、POST /submit は Worker のコードが処理する。
+  "assets": { "directory": "./public" },
+  "observability": { "enabled": true }
+}

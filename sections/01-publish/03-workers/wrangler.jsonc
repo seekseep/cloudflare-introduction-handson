@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Worker の名前。公開 URL は https://<name>.<あなたのサブドメイン>.workers.dev になります。
+  // 自分用に書き換えてください（例: hitokoto-api-tanaka）。
+  "name": "hitokoto-api",
+  // Worker の入口ファイル
+  "main": "src/index.js",
+  // ランタイムの基準日。新しいほど新しい機能が使えます（直近の日付でOK）。
+  "compatibility_date": "2026-06-01",
+  // ログやメトリクスを有効化（運用で役立つ。後半のセクションで触れます）
+  "observability": { "enabled": true }
+}
