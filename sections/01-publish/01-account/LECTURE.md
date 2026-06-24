@@ -39,7 +39,7 @@ Pages / Workers / D1 などのリソースを一覧・確認できます。
 ### TODO 2: wrangler でログインする
 
 ターミナルで以下を実行します（Node.js のセットアップが済んでいる前提。まだの人は
-[Node.js のセットアップ](../../HOST.md) を先に）。
+[Node.js のセットアップ](../../00-environment/01-node/LECTURE.md) を先に）。
 
 ```bash
 npx wrangler login

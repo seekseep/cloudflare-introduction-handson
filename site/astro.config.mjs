@@ -21,14 +21,7 @@ export default defineConfig({
       ],
       sidebar: [
         { label: 'はじめに', link: '/' },
-        {
-          label: '事前準備・セットアップ',
-          items: [
-            { label: 'Node.js のセットアップ', link: '/host/' },
-            { label: 'Cloudflare / Wrangler', link: '/wrangler/' },
-            { label: '開発ツール', link: '/tools/' },
-          ],
-        },
+        { label: '00. 事前準備・セットアップ', items: [{ autogenerate: { directory: '00-environment' } }] },
         { label: '01. Cloudflareで公開する', items: [{ autogenerate: { directory: '01-publish' } }] },
         { label: '02. 他サービスとの比較', items: [{ autogenerate: { directory: '02-compare' } }] },
         { label: '03. 公開時に気をつけたいこと', items: [{ autogenerate: { directory: '03-security' } }] },

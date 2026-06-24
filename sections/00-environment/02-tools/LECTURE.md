@@ -1,9 +1,6 @@
 ---
-docs: true
 title: 開発ツール（エディタ / ブラウザ）
-sidebar:
-  label: 開発ツール
-  order: 3
+docs: true
 ---
 
 # 開発ツール（エディタ / ブラウザ）

@@ -19,9 +19,10 @@ sidebar:
 
 ## 事前準備・セットアップ
 
-- [Node.js のセットアップ](./HOST.md)
-- [Cloudflare / Wrangler のセットアップ](./WRANGLER.md)
-- [開発ツール（エディタ / ブラウザ）](./TOOLS.md)
+- [Node.js のセットアップ](./00-environment/01-node/LECTURE.md)
+- [開発ツール（エディタ / ブラウザ）](./00-environment/02-tools/LECTURE.md)
+
+> Cloudflare アカウントと wrangler の準備は [01. Cloudflareで公開する](./01-publish/01-account/LECTURE.md) で扱います。
 
 ## 全体の流れ
 
