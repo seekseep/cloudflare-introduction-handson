@@ -1,0 +1,7 @@
+packages:
+  - site
+
+# Astro のビルド（画像最適化 sharp / バンドラ esbuild）に必要なビルドスクリプトを許可
+allowBuilds:
+  esbuild: true
+  sharp: true
