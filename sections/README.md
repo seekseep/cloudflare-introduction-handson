@@ -43,7 +43,10 @@ sidebar:
 
 ### 02. 他のサービスとの比較
 
-- [Vercel / AWS / VPS との違い](./02-compare/01-comparison/LECTURE.md)
+- [比較の全体像（3段階で絞り込む）](./02-compare/01-overview/LECTURE.md)
+- [オンプレ vs クラウド](./02-compare/02-onpremise-vs-cloud/LECTURE.md)
+- [VPS vs SaaS](./02-compare/03-vps-vs-saas/LECTURE.md)
+- [ベンダー比較（Vercel / Cloudflare / AWS / GCP / Azure）](./02-compare/04-vendors/LECTURE.md)
 
 ### 03. 公開するときに気をつけたいこと
 
