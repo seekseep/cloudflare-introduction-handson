@@ -1,11 +1,10 @@
 {
   "name": "cloudflare-introduction-handson",
   "private": true,
-  "packageManager": "pnpm@11.8.0",
   "scripts": {
-    "dev": "pnpm -C site dev",
-    "build": "pnpm -C site build",
-    "preview": "pnpm -C site preview",
-    "sync-lectures": "pnpm -C site sync-lectures"
+    "dev": "npm --prefix site run dev",
+    "build": "npm --prefix site run build",
+    "preview": "npm --prefix site run preview",
+    "sync-lectures": "npm --prefix site run sync-lectures"
   }
 }
