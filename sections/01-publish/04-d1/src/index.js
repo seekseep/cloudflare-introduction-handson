@@ -33,7 +33,6 @@ app.post('/api/messages', async (c) => {
     return c.json({ error: 'name と body は必須です' }, 400);
   }
 
-  // 値は必ずプレースホルダ ? でバインドする（文字列連結で SQL を組まない＝SQLインジェクション対策）。
   const result = await c.env.DB.prepare(
     'INSERT INTO messages (name, body) VALUES (?, ?)',
   )

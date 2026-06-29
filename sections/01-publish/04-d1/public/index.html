@@ -4,88 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ひとことボード</title>
-    <link rel="stylesheet" href="/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
-  <body>
-    <header class="header">
-      <h1>ひとことボード</h1>
-      <p class="lead">投稿が D1（データベース）に保存されます。</p>
+  <body class="bg-body-tertiary">
+    <header class="text-center py-4 border-bottom bg-white">
+      <h1 class="h3 mb-1">💬 ひとことボード</h1>
+      <p class="text-secondary mb-0">投稿が D1（データベース）に保存されます。</p>
     </header>
 
-    <main class="container">
-      <form class="post-form" id="post-form">
-        <input type="text" name="name" placeholder="なまえ" maxlength="20" required />
-        <input type="text" name="body" placeholder="ひとこと" maxlength="100" required />
-        <button type="submit">投稿</button>
+    <main class="container" style="max-width: 640px;">
+      <form class="card card-body shadow-sm my-4" id="post-form">
+        <div class="mb-3">
+          <label for="name" class="form-label">名前</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="なまえ" maxlength="20" required />
+        </div>
+        <div class="mb-3">
+          <label for="body" class="form-label">内容</label>
+          <textarea class="form-control" id="body" name="body" rows="2" placeholder="ひとこと" maxlength="100" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary fw-bold align-self-start">投稿</button>
       </form>
 
-      <p class="note" id="note" hidden></p>
+      <div class="alert alert-primary small" id="note" role="alert" hidden></div>
 
-      <ul class="message-list" id="message-list"></ul>
+      <ul class="list-group mb-4" id="message-list"></ul>
     </main>
 
-    <footer class="footer">
-      <p>Cloudflare 公開・運用ハンズオン</p>
+    <footer class="text-center text-secondary small py-4">
+      <p class="mb-0">Cloudflare 公開・運用ハンズオン</p>
     </footer>
 
-    <script>
-      // ローカルの Worker。公開後はデプロイで表示された Worker の URL に書き換える。
-      const API_BASE = 'http://localhost:8787';
-
-      const list = document.getElementById('message-list');
-      const form = document.getElementById('post-form');
-      const note = document.getElementById('note');
-
-      function showNote(text) {
-        note.textContent = text;
-        note.hidden = false;
-      }
-
-      function renderMessages(messages) {
-        list.innerHTML = '';
-        for (const m of messages) {
-          const li = document.createElement('li');
-          li.className = 'message';
-          const name = document.createElement('span');
-          name.className = 'message-name';
-          name.textContent = m.name;
-          const body = document.createElement('span');
-          body.className = 'message-body';
-          body.textContent = m.body;
-          li.append(name, body);
-          list.appendChild(li);
-        }
-      }
-
-      async function loadMessages() {
-        try {
-          const res = await fetch(`${API_BASE}/api/messages`);
-          renderMessages(await res.json());
-        } catch (e) {
-          showNote('API に接続できませんでした。Worker（npm run dev）が起動しているか確認してください。');
-        }
-      }
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = form.name.value.trim();
-        const body = form.body.value.trim();
-        const res = await fetch(`${API_BASE}/api/messages`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, body }),
-        });
-        if (!res.ok) {
-          showNote('投稿に失敗しました。');
-          return;
-        }
-        form.reset();
-        note.hidden = true;
-        // 保存されたので、サーバーから取り直して最新の一覧を表示する。
-        await loadMessages();
-      });
-
-      loadMessages();
-    </script>
+    <script src="./main.js"></script>
   </body>
 </html>

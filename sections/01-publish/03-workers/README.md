@@ -43,11 +43,16 @@ npm run front      # = wrangler pages dev ./public --port 8788
 
 ### API を単体で試す
 
-```bash
-curl http://localhost:8787/api/messages
-curl -X POST http://localhost:8787/api/messages \
-  -H 'Content-Type: application/json' \
-  -d '{"name":"てすと","body":"こんにちは"}'
+一覧の取得（GET）はブラウザのアドレスバーで `http://localhost:8787/api/messages` を開きます。
+
+投稿（POST）はブラウザの DevTools の Console（F12 →「Console」タブ）で実行します。
+
+```js
+fetch('http://localhost:8787/api/messages', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name: 'てすと', body: 'こんにちは' }),
+}).then(r => r.json()).then(console.log);
 ```
 
 ### Cloudflare に公開
@@ -56,7 +61,7 @@ curl -X POST http://localhost:8787/api/messages \
 npm run deploy     # = wrangler deploy
 ```
 
-表示された Worker の URL を、`public/index.html` の `API_BASE` に設定すると、公開した Pages からも
+表示された Worker の URL を、`public/main.js` の `API_BASE` に設定すると、公開した Pages からも
 API を呼べます。
 
 ## npm scripts

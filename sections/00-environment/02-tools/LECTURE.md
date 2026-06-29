@@ -24,7 +24,7 @@ brew install --cask visual-studio-code
 
 ### プロジェクトを開く・ターミナルを使う
 
-リポジトリのフォルダを VSCode で開き（**File → Open Folder**）、`Ctrl + `（バッククォート）で
+リポジトリのフォルダを VSCode で開き（**File → Open Folder**）、`Ctrl + \``（バッククォート）で
 エディタ内にターミナルを開けます。ここで `cd sections/...` して各レクチャーを起動します。
 
 ## ブラウザの開発者ツール

@@ -4,52 +4,37 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ひとことボード</title>
-    <link rel="stylesheet" href="/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
-  <body>
-    <header class="header">
-      <h1>ひとことボード</h1>
-      <p class="lead">みんなが残した「ひとこと」が並ぶ、小さな掲示板です。</p>
+  <body class="bg-body-tertiary">
+    <header class="text-center py-4 border-bottom bg-white">
+      <h1 class="h3 mb-1">💬 ひとことボード</h1>
+      <p class="text-secondary mb-0">みんなが残した「ひとこと」が並ぶ、小さな掲示板です。</p>
     </header>
 
-    <main class="container">
-      <!-- 投稿フォーム（この章ではまだ送信しても保存されません） -->
-      <form class="post-form" id="post-form">
-        <input type="text" name="name" placeholder="なまえ" maxlength="20" required />
-        <input type="text" name="body" placeholder="ひとこと" maxlength="100" required />
-        <button type="submit">投稿</button>
+    <main class="container" style="max-width: 640px;">
+      <form class="card card-body shadow-sm my-4" id="post-form">
+        <div class="mb-3">
+          <label for="name" class="form-label">名前</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="なまえ" maxlength="20" required />
+        </div>
+        <div class="mb-3">
+          <label for="body" class="form-label">内容</label>
+          <textarea class="form-control" id="body" name="body" rows="2" placeholder="ひとこと" maxlength="100" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary fw-bold align-self-start">投稿</button>
       </form>
-
-      <p class="note" id="note" hidden>
-        ※ この章ではフロント（見た目）だけを公開しています。投稿の保存は次章以降で API と
-        データベースをつなぐと動くようになります。
-      </p>
-
-      <ul class="message-list" id="message-list">
-        <!-- サンプル表示。次章で API から取得した内容に置き換えます -->
-        <li class="message">
-          <span class="message-name">たなか</span>
-          <span class="message-body">はじめての投稿です！</span>
-        </li>
-        <li class="message">
-          <span class="message-name">さとう</span>
-          <span class="message-body">Cloudflare で公開してみた</span>
-        </li>
-      </ul>
+      <ul class="list-group mb-4" id="message-list"></ul>
+      <p class="text-center text-secondary py-4 mb-0" id="empty" hidden>まだ投稿はありません。最初のひとことを残してみましょう。</p>
+      <div class="alert alert-primary small" role="alert">
+        ※ この章では投稿はお使いのブラウザ内（localStorage）にだけ保存されます。他の人には見えず、別の端末とも共有されません。みんなで共有できる保存は次章以降で API とデータベースをつなぐと動くようになります。
+      </div>
     </main>
 
-    <footer class="footer">
-      <p>Cloudflare 公開・運用ハンズオン</p>
+    <footer class="text-center text-secondary small py-4">
+      <p class="mb-0">Cloudflare 公開・運用ハンズオン</p>
     </footer>
 
-    <script>
-      // この章のフォームはまだ保存先（API）がないので、送信されたら案内を出すだけにします。
-      const form = document.getElementById('post-form');
-      const note = document.getElementById('note');
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        note.hidden = false;
-      });
-    </script>
+    <script src="./main.js"></script>
   </body>
 </html>

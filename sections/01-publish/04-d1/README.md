@@ -56,7 +56,7 @@ npm run front      # ターミナル2: フロント :8788
 npm run deploy
 ```
 
-公開後は `public/index.html` の `API_BASE` を公開 Worker の URL に変え、フロントを再デプロイします。
+公開後は `public/main.js` の `API_BASE` を公開 Worker の URL に変え、フロントを再デプロイします。
 
 ## npm scripts
 

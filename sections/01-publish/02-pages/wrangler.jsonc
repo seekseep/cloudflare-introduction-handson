@@ -1,9 +1,0 @@
-{
-  // wrangler.jsonc は JSONC（コメント書ける JSON）。$schema を入れるとエディタで補完が効きます。
-  "$schema": "node_modules/wrangler/config-schema.json",
-  // Cloudflare 上のプロジェクト名。公開 URL は https://<name>.pages.dev になります。
-  // 同じ名前は世界で1つなので、自分用に書き換えてください（例: hitokoto-board-tanaka）。
-  "name": "hitokoto-board",
-  // Pages として公開する静的ファイルのフォルダ
-  "pages_build_output_dir": "./public"
-}
