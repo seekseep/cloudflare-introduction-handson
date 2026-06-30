@@ -26,38 +26,48 @@ sidebar:
 
 ## 全体の流れ
 
-このハンズオンでは、小さな「ひとことボード」アプリを題材に、**フロント → API → データベース** の順で
-公開していきます。前半で公開のしかたを体験し、後半で「比較」「セキュリティ」「運用に役立つ機能」へ
-広げます。
+このハンズオンでは、小さな「ひとことボード」アプリを題材に、まず **静的なフロントを Pages で公開** し、
+続いて **フロント → API → データ** の順でアプリを作り上げます。後半は「比較」「セキュリティ」「運用に
+役立つ機能」へと広げます（05・06 は補足的な位置づけです）。
 
 ## 一覧
 
-### 01. Cloudflareで公開する（ハンズオン）
+### 01. Pages で公開する（ハンズオン）
 
-小さなアプリを段階的に Cloudflare へ公開します。
+まずは静的なフロントを Cloudflare に公開します。
 
 - [Cloudflare アカウントを作る](./01-publish/01-account/LECTURE.md)
 - [Pages でフロントを公開する](./01-publish/02-pages/LECTURE.md)
-- [Workers で API を動かす](./01-publish/03-workers/LECTURE.md)
-- [D1 でデータを保存する](./01-publish/04-d1/LECTURE.md)
 
-### 02. 他のサービスとの比較
+### 02. ウェブアプリの基本
 
-- [比較の全体像（3段階で絞り込む）](./02-compare/01-overview/LECTURE.md)
-- [オンプレ vs クラウド](./02-compare/02-onpremise-vs-cloud/LECTURE.md)
-- [VPS vs SaaS](./02-compare/03-vps-vs-saas/LECTURE.md)
-- [ベンダー比較（Vercel / Cloudflare / AWS / GCP / Azure）](./02-compare/04-vendors/LECTURE.md)
+- [ウェブアプリの基本（フロント / API / データ）](./02-web-app-basic/01-overview/LECTURE.md)
 
-### 03. 公開するときに気をつけたいこと
+### 03. アプリを作る（ハンズオン）
 
-- [秘匿情報（APIキー等）の扱い方](./03-security/01-secrets/LECTURE.md)
-- [踏み台にされる危険とその対策](./03-security/02-abuse/LECTURE.md)
-- [バックアップ・監視・アラート](./03-security/03-backup-monitoring/LECTURE.md)
-- [法令遵守と利用規約](./03-security/04-legal/LECTURE.md)
+フロントに API とデータをつなぎ、「ひとことボード」を完成させます。
 
-### 04. Cloudflareの機能と運用に役立つポイント
+- [Workers で API を動かす](./03-build-app/01-workers/LECTURE.md)
+- [D1 でデータを保存する](./03-build-app/02-d1/LECTURE.md)
+- [R2 で画像を保存する](./03-build-app/03-r2/LECTURE.md)
 
-- [Web Analytics でアクセス解析](./04-features/01-web-analytics/LECTURE.md)
-- [Turnstile で bot からフォームを守る](./04-features/02-turnstile/LECTURE.md)
-- [R2 で画像・ファイルを保存する](./04-features/03-r2/LECTURE.md)
-- [無料枠の「その先」｜課金の見極め方](./04-features/04-pricing/LECTURE.md)
+### 04. 他のサービスとの比較
+
+- [比較の全体像（3段階で絞り込む）](./04-compare/01-overview/LECTURE.md)
+- [オンプレ vs クラウド](./04-compare/02-onpremise-vs-cloud/LECTURE.md)
+- [VPS vs SaaS](./04-compare/03-vps-vs-saas/LECTURE.md)
+- [ベンダー比較（Vercel / Cloudflare / AWS / GCP / Azure）](./04-compare/04-vendors/LECTURE.md)
+
+### 05. 公開するときに気をつけたいこと（補足）
+
+- [秘匿情報（APIキー等）の扱い方](./05-security/01-secrets/LECTURE.md)
+- [踏み台にされる危険とその対策](./05-security/02-abuse/LECTURE.md)
+- [バックアップ・監視・アラート](./05-security/03-backup-monitoring/LECTURE.md)
+- [法令遵守と利用規約](./05-security/04-legal/LECTURE.md)
+
+### 06. Cloudflareの機能と運用に役立つポイント（補足）
+
+- [Web Analytics でアクセス解析](./06-features/01-web-analytics/LECTURE.md)
+- [Turnstile で bot からフォームを守る](./06-features/02-turnstile/LECTURE.md)
+- [その他の無料で使える機能](./06-features/03-others/LECTURE.md)
+- [無料枠の「その先」｜課金の見極め方](./06-features/04-pricing/LECTURE.md)

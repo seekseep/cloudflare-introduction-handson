@@ -59,10 +59,12 @@ export default defineConfig({
       sidebar: [
         { label: 'はじめに', link: '/' },
         { label: '00. 事前準備・セットアップ', items: [{ autogenerate: { directory: '00-environment' } }] },
-        { label: '01. Cloudflareで公開する', items: [{ autogenerate: { directory: '01-publish' } }] },
-        { label: '02. 他サービスとの比較', items: [{ autogenerate: { directory: '02-compare' } }] },
-        { label: '03. 公開時に気をつけたいこと', items: [{ autogenerate: { directory: '03-security' } }] },
-        { label: '04. Cloudflareの機能と運用', items: [{ autogenerate: { directory: '04-features' } }] },
+        { label: '01. Pages で公開する', items: [{ autogenerate: { directory: '01-publish' } }] },
+        { label: '02. ウェブアプリの基本', items: [{ autogenerate: { directory: '02-web-app-basic' } }] },
+        { label: '03. アプリを作る', items: [{ autogenerate: { directory: '03-build-app' } }] },
+        { label: '04. 他サービスとの比較', items: [{ autogenerate: { directory: '04-compare' } }] },
+        { label: '05. 公開時に気をつけたいこと（補足）', items: [{ autogenerate: { directory: '05-security' } }] },
+        { label: '06. Cloudflareの機能と運用（補足）', items: [{ autogenerate: { directory: '06-features' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

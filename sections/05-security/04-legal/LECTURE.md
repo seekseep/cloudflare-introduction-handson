@@ -100,4 +100,4 @@ Cloudflare をはじめ、利用する各サービスには**利用規約**や *
 
 ## 次の章へ
 
-[Web Analytics でアクセス解析](../../04-features/01-web-analytics/LECTURE.md)
+[Web Analytics でアクセス解析](../../06-features/01-web-analytics/LECTURE.md)

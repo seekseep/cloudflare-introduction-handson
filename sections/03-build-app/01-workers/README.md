@@ -1,4 +1,4 @@
-# 03-workers - Workers で API を動かす
+# 01-workers - Workers で API を動かす
 
 「ひとことボード」の **API（サーバー側）** を Cloudflare Workers で作るレクチャーです。Hono を使って
 「ひとこと一覧を返す」「投稿を受け取る」エンドポイントを作り、フロント（Pages）から呼び出します。

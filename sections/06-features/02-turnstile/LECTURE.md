@@ -27,7 +27,7 @@ docs: true
 - CAPTCHA の役割と、Turnstile がそれをどう置き換えるか
 - **検証は必ずサーバー側で行う**：フロントのウィジェット表示だけでは防御にならない。発行されたトークンを
   サーバーが Cloudflare に問い合わせて（`siteverify`）初めて意味がある
-- sitekey は公開してよい値、secret は秘密（[秘匿情報の扱い](../../03-security/01-secrets/LECTURE.md)
+- sitekey は公開してよい値、secret は秘密（[秘匿情報の扱い](../../05-security/01-secrets/LECTURE.md)
   と同じ原則）
 - トークンは **1 回限り・有効期限あり**（使い回すと失敗する）
 
@@ -94,4 +94,4 @@ npm run deploy
 
 ## 次の章へ
 
-次は [R2 で画像・ファイルを保存する](../03-r2/LECTURE.md) に進みます。
+次は [その他の無料で使える機能](../03-others/LECTURE.md) に進みます。

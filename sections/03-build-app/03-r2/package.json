@@ -1,5 +1,5 @@
 {
-  "name": "03-build-app-02-d1",
+  "name": "03-build-app-03-r2",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,8 @@
     "front": "wrangler pages dev ./public --port 8788",
     "db:create": "wrangler d1 create hitokoto-db",
     "db:migrate:local": "wrangler d1 migrations apply hitokoto-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db --remote"
+    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db --remote",
+    "bucket:create": "wrangler r2 bucket create hitokoto-images"
   },
   "dependencies": {
     "hono": "^4.7.0"

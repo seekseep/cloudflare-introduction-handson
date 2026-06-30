@@ -197,7 +197,7 @@ TODO 2 では、公開のたびに「公開フォルダ（`./public`）」を引
 npx wrangler pages deploy
 ```
 
-03-workers / 04-d1 のレクチャーでは、最初からこの `wrangler.jsonc` を使って公開していきます。
+「アプリを作る」セクション（Workers / D1）のレクチャーでは、最初からこの `wrangler.jsonc` を使って公開していきます。
 
 ### npm scripts でコマンドを短くする
 
@@ -225,4 +225,5 @@ npm run deploy   # = npx wrangler pages deploy ./public
 
 ## 次の章へ
 
-フロントが公開できたら、次は [Workers で API を動かす](../03-workers/LECTURE.md) に進みます。
+フロントが公開できたら、次は [ウェブアプリの基本](../../02-web-app-basic/01-overview/LECTURE.md) で、
+これから作るアプリの仕組み（フロント・API・データ）を整理します。
