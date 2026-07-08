@@ -9,11 +9,11 @@
 ## 構成
 
 ```text
-src/index.js          Worker（D1 から読み書きする API）
-migrations/0001_init.sql  テーブル定義 + 初期サンプル
-public/               フロント（投稿後に一覧を取り直す）
-wrangler.jsonc        Worker + D1 binding の設定
-package.json          npm scripts（dev / deploy / db:*）
+src/index.js     Worker（D1 から読み書きする API）
+schema.sql       テーブル定義
+public/          フロント（投稿後に一覧を取り直す）
+wrangler.jsonc   Worker + D1 binding の設定
+package.json     npm scripts（dev / deploy / db:*）
 ```
 
 ## 起動方法
@@ -32,13 +32,12 @@ npm run db:create        # = wrangler d1 create hitokoto-db
 
 表示された `database_id` を [wrangler.jsonc](./wrangler.jsonc) の `database_id` に貼り付けます。
 
-### マイグレーション（テーブル作成）
+### テーブルを作る
 
-ローカル用と本番用は **別のデータベース** なので、それぞれに適用します。
+`schema.sql` をローカル D1 に流します。
 
 ```bash
-npm run db:migrate:local     # ローカル（wrangler dev 用）
-npm run db:migrate:remote    # 本番（公開後の D1）
+npm run db:setup     # = wrangler d1 execute hitokoto-db --local --file=./schema.sql
 ```
 
 ### 起動（ターミナル2つ）

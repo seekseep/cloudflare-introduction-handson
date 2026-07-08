@@ -11,13 +11,18 @@ docs: true
 ここで使うのが **Cloudflare D1**。SQLite ベースのデータベースで、Worker から直接読み書きできます。
 これでようやく「ひとことボード」が完成します。
 
+![Workerだけだとリクエストごとにデータが消えるが、D1に入れると残る](./images/01-worker-stateless-vs-d1.svg)
+
+<!-- genfig: 上段「Worker(⚙️)だけ」: 投稿(📝)が次のリクエストで消える様子を、容器(Worker)の外へ漏れ落ちる/消滅する向きで表現。下段「Worker(⚙️)+D1(🗄️)」: 投稿(📝)がD1(🗄️)という容器に入って残る様子。上段と下段を対比。イメージスキーマ = CONTAINER（残る/漏れる）の対比。絵文字: Worker=⚙️, 投稿=📝, データベース=🗄️。 -->
+*図: Worker だけだとデータは残らない。D1 という「ためる場所」に入れて初めてデータが残る。*
+
 このハンズオンでは ORM（オブジェクト関係マッピング）は使わず、**生の SQL** を書きます。中で何が
 起きているかが見えるほうが、仕組みを理解しやすいからです。
 
 ## TODO
 
 1. D1 データベースを作り、`wrangler.jsonc` に binding を設定する
-2. マイグレーションでテーブルを作る（ローカル・本番それぞれ）
+2. `schema.sql` を流してテーブルを作る
 3. Worker から D1 に読み書きするコードを読む
 4. ローカルで投稿が保存されることを確認する
 5. 本番に公開して、インターネット越しに保存できることを確認する
@@ -27,7 +32,7 @@ docs: true
 - データベースの役割（処理が終わってもデータが残る）
 - D1 の基本：`prepare(...).bind(...).all()/run()` で SQL を実行する
 - 値は必ず **プレースホルダ `?` でバインド** する（文字列連結で SQL を作らない＝SQLインジェクション対策）
-- **ローカル D1 と本番 D1 は別物**。マイグレーションは両方に適用が必要
+- テーブルは `schema.sql` を流して作る（ローカルで開発し、公開時に本番にも同じ SQL を流す）
 
 ## 説明
 
@@ -48,25 +53,23 @@ npx wrangler d1 create hitokoto-db
   {
     "binding": "DB",
     "database_name": "hitokoto-db",
-    "database_id": "（ここに貼る）",
-    "migrations_dir": "migrations"
+    "database_id": "（ここに貼る）"
   }
 ]
 ```
 
 `binding` の `"DB"` が、Worker のコードで `c.env.DB` として使う名前です。
 
-### TODO 2: マイグレーションでテーブルを作る
+### TODO 2: テーブルを作る
 
-テーブル定義は [migrations/0001_init.sql](./migrations/0001_init.sql) にあります。これを適用します。
+テーブル定義は [schema.sql](./schema.sql) にあります。この SQL をデータベースに流すだけです。
 
 ```bash
-npx wrangler d1 migrations apply hitokoto-db --local     # ローカル（wrangler dev が使う SQLite）
-npx wrangler d1 migrations apply hitokoto-db --remote    # 本番（公開後に使う D1）
+npx wrangler d1 execute hitokoto-db --local --file=./schema.sql
 ```
 
-> **ここが最頻のつまずきポイント**：ローカルと本番は完全に別のデータベースです。片方にしか適用して
-> いないと「ローカルでは動くのに公開すると table が無い」エラーになります。両方に流しましょう。
+`--local` は手元の開発用 D1（`wrangler dev` が使う SQLite）にだけ流します。本番側へは TODO 5 の
+公開のときに同じ SQL をもう一度流すので、今はローカルだけで大丈夫です。
 
 ### TODO 3: 読み書きのコードを読む
 
@@ -108,11 +111,14 @@ npx wrangler d1 execute hitokoto-db --local --command "SELECT * FROM messages"
 
 ### TODO 5: 本番に公開する
 
+本番の D1 はローカルとは別のデータベースなので、公開前に同じ `schema.sql` を本番側にも流して
+おきます（`--local` を `--remote` に変えるだけです）。
+
 ```bash
+npx wrangler d1 execute hitokoto-db --remote --file=./schema.sql    # 本番 D1 にテーブルを作る
 npx wrangler deploy
 ```
 
-公開後の Worker から本番 D1 を使うには、TODO 2 の `db:migrate:remote` が済んでいる必要があります。
 公開 Worker の URL を `public/main.js` の `API_BASE` に設定し、フロントを再デプロイすれば、
 インターネット上の「ひとことボード」が完成です。
 
@@ -133,8 +139,8 @@ npx wrangler d1 execute hitokoto-db --remote --command "SELECT * FROM messages"
 
 ### npm scripts でコマンドを短くする
 
-この章では `npx wrangler d1 migrations apply hitokoto-db --local` のような **長いコマンド** を
-何度か打ちました。よく使うものは [package.json](./package.json) の `scripts` に名前を付けて
+この章では `npx wrangler d1 execute hitokoto-db --local --file=./schema.sql` のような **長いコマンド** を
+打ちました。よく使うものは [package.json](./package.json) の `scripts` に名前を付けて
 登録しておくと、短い名前で呼べます。
 
 ```jsonc
@@ -144,8 +150,8 @@ npx wrangler d1 execute hitokoto-db --remote --command "SELECT * FROM messages"
     "front": "wrangler pages dev ./public --port 8788",             // npm run front
     "deploy": "wrangler deploy",                                    // npm run deploy
     "db:create": "wrangler d1 create hitokoto-db",                  // npm run db:create
-    "db:migrate:local": "wrangler d1 migrations apply hitokoto-db --local",   // npm run db:migrate:local
-    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db --remote"  // npm run db:migrate:remote
+    "db:setup": "wrangler d1 execute hitokoto-db --local --file=./schema.sql",    // npm run db:setup
+    "db:setup:remote": "wrangler d1 execute hitokoto-db --remote --file=./schema.sql"  // npm run db:setup:remote
   }
 }
 ```
@@ -154,15 +160,15 @@ npx wrangler d1 execute hitokoto-db --remote --command "SELECT * FROM messages"
 
 ```bash
 npm run db:create           # = npx wrangler d1 create hitokoto-db
-npm run db:migrate:local    # = npx wrangler d1 migrations apply hitokoto-db --local
-npm run db:migrate:remote   # = npx wrangler d1 migrations apply hitokoto-db --remote
+npm run db:setup            # = npx wrangler d1 execute hitokoto-db --local --file=./schema.sql
+npm run db:setup:remote     # = npx wrangler d1 execute hitokoto-db --remote --file=./schema.sql
 npm run dev                 # = npx wrangler dev
 npm run front               # = npx wrangler pages dev ./public --port 8788
 npm run deploy              # = npx wrangler deploy
 ```
 
-このフォルダの `package.json` には最初からこの scripts が入っているので、`npm run db:migrate:local`
-のように呼んでも動きます。`db:migrate:remote` のような **打ち間違えると本番に影響するコマンド** ほど、
+このフォルダの `package.json` には最初からこの scripts が入っているので、`npm run db:setup`
+のように呼んでも動きます。`db:setup:remote` のような **打ち間違えると本番に影響するコマンド** ほど、
 名前で固定しておくと安全です。
 
 ## 次の章へ

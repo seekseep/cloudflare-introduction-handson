@@ -52,7 +52,7 @@ docs: true
 
 ![フロント(Pages)・API(Workers)・データ(D1/R2)の3層構造](./images/02-three-layers.svg)
 
-<!-- genfig: 上から「フロント=Pages(🖥️)」「API=Workers(⚙️)」「データ=D1(🗄️)/R2(📦)」を縦に積んだ3層図。各層を上下の矢印でつなぐ。イメージスキーマ = VERTICALITY + PART-WHOLE。 -->
+<!-- genfig: 上から「フロント=Pages(🌐)」「API=Workers(⚙️)」「データ=D1(🗄️)/R2(📦)」を縦に積んだ3層図。各層を上下の矢印でつなぐ。イメージスキーマ = VERTICALITY + PART-WHOLE。 -->
 *図: ウェブアプリを支える3つの層と、Cloudflare での対応。*
 
 | 層 | 役割 | 「ひとことボード」では | Cloudflare では |

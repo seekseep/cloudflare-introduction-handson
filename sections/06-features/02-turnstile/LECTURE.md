@@ -59,6 +59,11 @@ npm run dev
 肝心なのはサーバー側です。[src/index.js](./src/index.js) の `/submit` で、受け取ったトークンを
 Cloudflare に問い合わせて検証します。
 
+![ブラウザがトークンを取得しWorkerに送り、WorkerがCloudflareに問い合わせて検証する流れ](./images/01-siteverify-flow.svg)
+
+<!-- genfig: 左から右への横フロー。ブラウザ(🌐)→Worker(⚙️)→クラウド(☁️)を3ノードで並べる。ブラウザからWorkerへの矢印ラベル「トークン付き送信(/submit)」、WorkerからクラウドへのCloudflareへの矢印ラベル「siteverify(secret+token)」、クラウドからWorkerへ戻る矢印ラベル「success: true/false」。検証成功(✅)をWorkerの下に小さく添える。イメージスキーマ = SOURCE-PATH-GOAL（トークンが順に渡り検証結果が戻る経路）。絵文字: ブラウザ=🌐 1f310 / Worker=⚙️ 2699 / クラウド=☁️ 2601 / 成功=✅ 2705。関係はすべて矢印ラベルで表現しノード化しない。 -->
+*図: トークンはブラウザ→Worker→Cloudflare（siteverify）と渡り、検証結果が Worker に返る。*
+
 ```js
 const outcome = await verifyTurnstile(c.env.TURNSTILE_SECRET, token, ip);
 if (!outcome.success) {
@@ -70,6 +75,11 @@ if (!outcome.success) {
 `siteverify` は `secret` と `token` を Cloudflare に送り、`{ success: true/false }` を返します。
 **この検証をサボって「ウィジェットを置いただけ」では、bot は直接 `/submit` を叩けるので無意味** です。
 必ずサーバー側で検証します。
+
+![ウィジェットを迂回したbotはサーバー側のsiteverifyで遮断される](./images/02-server-side-blockage.svg)
+
+<!-- genfig: 上下2経路の対比図。上の経路: 正規ユーザー(👤)→ウィジェット(🌐)→Worker(⚙️) を通り、Workerでsiteverify成功(✅)して通過。下の経路: bot(⚠️)がウィジェットを飛び越えて直接Worker(⚙️)の/submitを叩こうとするが、Workerのサーバー側検証で遮断(🚧)され通れない。下の経路にブロックの障壁を置く。イメージスキーマ = FORCE:BLOCKAGE（サーバー側検証が不正なリクエストの前進を止める）+ SOURCE-PATH-GOAL。絵文字: ユーザー=👤 1f464 / bot・警告=⚠️ 26a0 / ウィジェット(ブラウザ)=🌐 1f310 / Worker=⚙️ 2699 / 成功=✅ 2705 / 遮断=🚧 1f6a7。関係は矢印ラベルで表現。 -->
+*図: ウィジェット表示だけでは bot に直接叩かれる。サーバー側の siteverify があって初めて遮断できる。*
 
 `TURNSTILE_SECRET` はコードに書かず、ローカルは `.dev.vars`、本番は `wrangler secret put` で渡します。
 

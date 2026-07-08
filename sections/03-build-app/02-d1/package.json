@@ -8,8 +8,8 @@
     "deploy": "wrangler deploy",
     "front": "wrangler pages dev ./public --port 8788",
     "db:create": "wrangler d1 create hitokoto-db",
-    "db:migrate:local": "wrangler d1 migrations apply hitokoto-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db --remote"
+    "db:setup": "wrangler d1 execute hitokoto-db --local --file=./schema.sql",
+    "db:setup:remote": "wrangler d1 execute hitokoto-db --remote --file=./schema.sql"
   },
   "dependencies": {
     "hono": "^4.7.0"

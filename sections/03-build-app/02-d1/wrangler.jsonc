@@ -10,8 +10,7 @@
     {
       "binding": "DB",
       "database_name": "hitokoto-db",
-      "database_id": "ここに wrangler d1 create の出力IDを貼る",
-      "migrations_dir": "migrations"
+      "database_id": "ここに wrangler d1 create の出力IDを貼る"
     }
   ]
 }

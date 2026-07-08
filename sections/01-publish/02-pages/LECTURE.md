@@ -92,6 +92,11 @@ npx wrangler pages deploy ./public
 
 > これは指定フォルダの中身をそのままアップロードする **Direct Upload** という方式です。
 
+![ローカルの public フォルダを Cloudflare Pages にアップロードすると公開 URL で配信される流れ](./images/01-direct-upload-flow.svg)
+
+<!-- genfig: 左に「ローカル(💻)」、その中に公開フォルダ「./public(📁)」を内包(CONTAINER)。中央のクラウド「Cloudflare Pages(☁️)」へ向けて connector を引き、ラベルは「wrangler pages deploy（アップロード）」。右に成果物としての公開 URL「<name>.pages.dev(🌐)」を置き、Pages から connector で結びラベル「配信」。左→中→右の一方向フロー。イメージスキーマ = SOURCE-PATH-GOAL + CONTAINER。絵文字割当: ローカル=💻 / 公開フォルダ=📁 / Cloudflare Pages=☁️ / 公開URL=🌐。 -->
+*図: ローカルの `./public` を Pages にアップロード（Direct Upload）すると、`<name>.pages.dev` で配信される。*
+
 > 毎回フォルダの指定やプロジェクト名の入力をするのが面倒な場合は、これらを設定ファイルにまとめておけます。詳しくは [設定ファイル `wrangler.jsonc` とは](#設定ファイル-wranglerjsonc-とは) を参照してください。
 
 ### TODO 3: 直して再デプロイする
@@ -190,6 +195,11 @@ TODO 2 では、公開のたびに「公開フォルダ（`./public`）」を引
 見比べると分かるとおり、`name` と `pages_build_output_dir` は、さっき **対話で答えた「プロジェクト名」と
 引数で渡した「公開フォルダ」がそのまま入っている** だけです。これが Pages デプロイの基本構造です。
 
+![対話で答えたプロジェクト名と引数で渡した公開フォルダが、そのまま wrangler.jsonc の2項目に対応する](./images/02-args-to-config.svg)
+
+<!-- genfig: 左列にデプロイ時に渡した2つの値「プロジェクト名（対話）」「公開フォルダ ./public（引数）」を上下に並べる。右列に設定ファイル「wrangler.jsonc(📜)」を CONTAINER として描き、その中に「name」「pages_build_output_dir」の2行を入れる。左の各項目から右の対応する行へ水平 connector を引き、上の connector ラベル「= name」、下の connector ラベル「= pages_build_output_dir」。左→右の対応マッピング。イメージスキーマ = PART-WHOLE + BALANCE（左右対応）。絵文字割当: 設定ファイル=📜 / 公開フォルダ=📁。 -->
+*図: デプロイ時に渡した「プロジェクト名」と「公開フォルダ」が、そのまま `wrangler.jsonc` の 2 項目に対応する。*
+
 設定ファイルがあると、wrangler はそこから 2 つの情報を読み取るので、次回からは **引数も対話もなしで**
 コマンド一発で公開できます。
 
@@ -225,5 +235,5 @@ npm run deploy   # = npx wrangler pages deploy ./public
 
 ## 次の章へ
 
-フロントが公開できたら、次は [ウェブアプリの基本](../../02-web-app-basic/01-overview/LECTURE.md) で、
-これから作るアプリの仕組み（フロント・API・データ）を整理します。
+フロントが公開できたら、次は [静的ページアプリの例](../03-examples/LECTURE.md) で、
+サーバーを用意しなくても作れるアプリの例を、実際に動かして眺めてみましょう。
