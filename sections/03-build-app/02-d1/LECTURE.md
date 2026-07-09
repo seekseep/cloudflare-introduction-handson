@@ -114,6 +114,11 @@ npx wrangler d1 execute hitokoto-db --local --command "SELECT * FROM messages"
 本番の D1 はローカルとは別のデータベースなので、公開前に同じ `schema.sql` を本番側にも流して
 おきます（`--local` を `--remote` に変えるだけです）。
 
+![マイグレーションをローカルD1と本番D1の両方に適用する必要がある](./images/02-local-vs-remote-d1.svg)
+
+<!-- genfig: 中央にマイグレーション(📜 = テーブル定義のSQL)。そこから2方向に分岐し、左「--local → ローカルD1(🗄️ 手元PC=💻 の中)」右「--remote → 本番D1(🗄️ クラウド=☁️ の中)」。2つのD1は別物であることを、間に区切り線/壁を入れて強調。片方だけに適用すると反対側に table が無いことを示唆。イメージスキーマ = SPLITTING（分岐）+ CONTAINER（別々の容器）。絵文字: マイグレーション=📜, データベース=🗄️, ローカル/PC=💻, クラウド=☁️。 -->
+*図: 同じ `schema.sql` を、ローカル D1（`--local`）と本番 D1（`--remote`）の両方に流す。2つは別のデータベース。*
+
 ```bash
 npx wrangler d1 execute hitokoto-db --remote --file=./schema.sql    # 本番 D1 にテーブルを作る
 npx wrangler deploy
