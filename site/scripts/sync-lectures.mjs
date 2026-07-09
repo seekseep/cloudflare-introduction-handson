@@ -15,6 +15,7 @@
  * 本文中の相対リンクは:
  *   - 同期対象のマークダウン → 対応するサイト URL (相対) に変換
  *   - sections/ 配下のソースコードや他リソース → GitHub blob URL に変換
+ *   - 画像 (`![...](...)`) → GitHub raw URL に変換 (blob は HTML を返し <img> が壊れるため)
  *   - リポジトリルート直下のファイル (AGENTS.md など) → GitHub blob URL に変換
  *
  * REPO（GitHub URL）と base は site/astro.config.mjs から読む。
@@ -180,9 +181,20 @@ function resolveSiteUrl(resolved, isDirLink) {
 }
 
 function transformLinks(content, sourceDir, sourceSiteUrl) {
-  return content.replace(/(\[[^\]]*\])\(([^)\s]+)(\s+"[^"]*")?\)/g, (match, label, rawTarget, title) => {
+  // 画像 (`![alt](...)`) はソースコードのように blob URL へ飛ばすと、blob は画像
+  // 本体ではなく HTML ページを返すため <img> がリンク切れになる。画像だけは
+  // 画像バイト列をそのまま返す raw.githubusercontent.com に向ける。
+  const RAW = REPO.replace('github.com', 'raw.githubusercontent.com');
+  const githubAsset = (isImage, resolved, hash, titlePart) =>
+    isImage
+      ? `${RAW}/main/${resolved}${hash}${titlePart}`
+      : `${REPO}/blob/main/${resolved}${hash}${titlePart}`;
+
+  return content.replace(/(!?)(\[[^\]]*\])\(([^)\s]+)(\s+"[^"]*")?\)/g, (match, bang, label, rawTarget, title) => {
     const target = rawTarget.trim();
     const titlePart = title || '';
+    const isImage = bang === '!';
+    const prefix = `${bang}${label}`;
 
     if (/^(https?:|mailto:|tel:|#)/i.test(target)) return match;
     if (target.startsWith('/')) return match;
@@ -194,7 +206,7 @@ function transformLinks(content, sourceDir, sourceSiteUrl) {
 
     if (PUBLIC_ASSETS.has(path.posix.basename(resolved))) {
       const t = publicTargetFor(resolved);
-      if (t) return `${label}(${t.url}${hash}${titlePart})`;
+      if (t) return `${prefix}(${t.url}${hash}${titlePart})`;
     }
 
     if (!target.startsWith('./') && !target.startsWith('../')) return match;
@@ -202,15 +214,15 @@ function transformLinks(content, sourceDir, sourceSiteUrl) {
 
     const toUrl = resolveSiteUrl(resolved, isDirLink);
     if (toUrl) {
-      return `${label}(${relativeUrl(sourceSiteUrl, toUrl, hash)}${titlePart})`;
+      return `${prefix}(${relativeUrl(sourceSiteUrl, toUrl, hash)}${titlePart})`;
     }
 
     if (resolved.startsWith('sections/')) {
-      return `${label}(${REPO}/blob/main/${resolved}${hash}${titlePart})`;
+      return `${prefix}(${githubAsset(isImage, resolved, hash, titlePart)})`;
     }
 
     if (!resolved.includes('/') && resolved.length > 0) {
-      return `${label}(${REPO}/blob/main/${resolved}${hash}${titlePart})`;
+      return `${prefix}(${githubAsset(isImage, resolved, hash, titlePart)})`;
     }
 
     return match;
