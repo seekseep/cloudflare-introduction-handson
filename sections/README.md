@@ -27,8 +27,8 @@ sidebar:
 ## 全体の流れ
 
 このハンズオンでは、小さな「ひとことボード」アプリを題材に、まず **静的なフロントを Pages で公開** し、
-続いて **フロント → API → データ** の順でアプリを作り上げます。後半は「比較」「セキュリティ」「運用に
-役立つ機能」へと広げます（05・06 は補足的な位置づけです）。
+続いて **セキュリティの土台** を押さえてから、**フロント → API → データ** の順でアプリを作り上げます。
+最後に「比較」や「運用に役立つ機能」を付録として広げます。
 
 ## 一覧
 
@@ -38,10 +38,15 @@ sidebar:
 
 - [Cloudflare アカウントを作る](./01-publish/01-account/LECTURE.md)
 - [Pages でフロントを公開する](./01-publish/02-pages/LECTURE.md)
+- [ウェブアプリの基本（フロント / API / データ）](./01-publish/03-webapp/LECTURE.md)
 
-### 02. ウェブアプリの基本
+### 02. セキュリティ
 
-- [ウェブアプリの基本（フロント / API / データ）](./02-web-app-basic/01-overview/LECTURE.md)
+アプリを作る前に、公開時に押さえておきたい考え方を整理します。
+
+- [セキュリティの3要素（可用性・機密性・完全性）](./02-security/01-basic/LECTURE.md)
+- [OSS のセキュリティ](./02-security/02-oss/LECTURE.md)
+- [AI エージェントの暴走](./02-security/03-ai-agents/LECTURE.md)
 
 ### 03. アプリを作る（ハンズオン）
 
@@ -51,23 +56,9 @@ sidebar:
 - [D1 でデータを保存する](./03-build-app/02-d1/LECTURE.md)
 - [R2 で画像を保存する](./03-build-app/03-r2/LECTURE.md)
 
-### 04. 他のサービスとの比較
+### 04. 付録
 
-- [比較の全体像（3段階で絞り込む）](./04-compare/01-overview/LECTURE.md)
-- [オンプレ vs クラウド](./04-compare/02-onpremise-vs-cloud/LECTURE.md)
-- [VPS vs SaaS](./04-compare/03-vps-vs-saas/LECTURE.md)
-- [ベンダー比較（Vercel / Cloudflare / AWS / GCP / Azure）](./04-compare/04-vendors/LECTURE.md)
-
-### 05. 公開するときに気をつけたいこと（補足）
-
-- [秘匿情報（APIキー等）の扱い方](./05-security/01-secrets/LECTURE.md)
-- [踏み台にされる危険とその対策](./05-security/02-abuse/LECTURE.md)
-- [バックアップ・監視・アラート](./05-security/03-backup-monitoring/LECTURE.md)
-- [法令遵守と利用規約](./05-security/04-legal/LECTURE.md)
-
-### 06. Cloudflareの機能と運用に役立つポイント（補足）
-
-- [Web Analytics でアクセス解析](./06-features/01-web-analytics/LECTURE.md)
-- [Turnstile で bot からフォームを守る](./06-features/02-turnstile/LECTURE.md)
-- [その他の無料で使える機能](./06-features/03-others/LECTURE.md)
-- [無料枠の「その先」｜課金の見極め方](./06-features/04-pricing/LECTURE.md)
+- [公開先の比較（オンプレ/クラウド・VPS/SaaS・ベンダー）](./04-appendix/01-compare/LECTURE.md)
+- [Web Analytics でアクセス解析](./04-appendix/02-web-analytics/LECTURE.md)
+- [Turnstile で bot からフォームを守る](./04-appendix/03-turnstile/LECTURE.md)
+- [その他の便利な機能](./04-appendix/04-others/LECTURE.md)

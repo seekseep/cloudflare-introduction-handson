@@ -1,12 +1,11 @@
 {
-  "name": "02-build-app-02-workers",
+  "name": "05-features-02-turnstile",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "front": "wrangler pages dev ./public --port 8788"
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "hono": "^4.7.0"

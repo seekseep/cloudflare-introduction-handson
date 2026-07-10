@@ -5,7 +5,7 @@ docs: true
 
 # Workers で API を動かす
 
-[ウェブアプリの基本](../../02-web-app-basic/01-overview/LECTURE.md) で見たとおり、アプリには「フロント」
+[ウェブアプリの基本](../../01-publish/03-webapp/LECTURE.md) で見たとおり、アプリには「フロント」
 「API（処理）」「データ」の層があります。フロント（見た目）はすでに Pages に公開しました。次は、投稿を
 保存したり一覧を返したりする「処理」を作る番です。そこで登場するのが **Cloudflare Workers** です。
 

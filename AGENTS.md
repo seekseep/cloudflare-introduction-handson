@@ -33,15 +33,36 @@ Cloudflare に公開しながらテーマを学ぶ。サイト（`site/`）は `
 
 ## ハンズオンの題材（共通）
 
-小さな「ひとことボード」アプリ。01-publish でフロントを Pages に公開し、03-build-app のレクチャーで
-**API（Workers）→ 保存（D1）→ 画像（R2）** と段階的に作り上げる。各レクチャーは単体で `cd` して
-動かせるスナップショットになっている。
+小さな「ひとことボード」アプリ。01-publish でフロントを Pages に公開し、02-security で公開時の
+土台を押さえたうえで、03-build-app のレクチャーで **API（Workers）→ 保存（D1）→ 画像（R2）** と
+段階的に作り上げる。各レクチャーは単体で `cd` して動かせるスナップショットになっている。
+
+## セクション構成（目次）
+
+番号がサイト sidebar の並び順。`site/astro.config.mjs` の sidebar と対応する。
+
+- **00-environment** … 開発環境の準備
+  - `01-node` Node.js のセットアップ / `02-tools` エディタ・ブラウザ開発者ツール
+- **01-publish** … フロントを Pages で公開する（ハンズオン）
+  - `00-about` このセクションについて / `01-account` アカウント作成・wrangler ログイン /
+    `02-pages` Pages で公開 / `03-webapp` ウェブアプリの基本（フロント / API / データ）
+- **02-security** … 公開時に押さえるセキュリティ（読み物）
+  - `01-basic` セキュリティの3要素（可用性・機密性・完全性 = CIA） /
+    `02-oss` OSS のセキュリティ（依存・サプライチェーン・実例） /
+    `03-ai-agents` AI エージェントの暴走（自律実行のリスクと制御・実例）
+- **03-build-app** … 「ひとことボード」を作る（ハンズオン）
+  - `01-workers` Workers で API / `02-d1` D1 で保存 / `03-r2` R2 で画像
+- **04-appendix** … 付録
+  - `01-compare` 公開先の比較（オンプレ/クラウド・VPS/SaaS・ベンダー） /
+    `02-web-analytics` アクセス解析（Cloudflare / GA / Matomo / Plausible） /
+    `03-turnstile` bot 対策（Turnstile vs reCAPTCHA・動くサンプルあり） /
+    `04-others` その他の便利な機能＋料金の見極め
 
 ## ディレクトリ構成
 
 ```text
 /README.md              リポジトリ全体の説明
-/AGENTS.md              本ファイル
+/AGENTS.md              本ファイル（プロジェクト方針・目次の単一の情報源）
 /sections/              セクション群（教材本体, 単一の情報源）
 /site/                  @astrojs/starlight の解説サイト（sections を取り込んで生成）
 /.github/workflows/     GitHub Pages デプロイ
