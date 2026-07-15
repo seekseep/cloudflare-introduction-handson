@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="340" viewBox="0 0 960 340" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="340" fill="#ffffff"/>
+<rect x="20" y="20" width="920" height="300" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3.5"/>
+<rect x="60" y="60" width="340" height="44" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3.5"/>
+<text x="78" y="88" text-anchor="start" font-size="17" fill="#b91c1c" font-weight="600">SECTION 02 ・ セキュリティ</text>
+<text x="64" y="168" text-anchor="start" font-size="26" fill="#0f172a" font-weight="700">セキュリティの3要素</text>
+<text x="64" y="212" text-anchor="start" font-size="26" fill="#0f172a" font-weight="700">（可用性・機密性・完全性）</text>
+<text x="66" y="286" text-anchor="start" font-size="21" fill="#b91c1c" font-weight="700">02-01</text>
+<ellipse cx="800" cy="170" rx="92" ry="92" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<svg x="740" y="110" width="120" height="120" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M33 3c-7-3-15-3-15-3S10 0 3 3C0 18 3 31 18 36c15-5 18-18 15-33z"/><path fill="#55ACEE" d="M18 33.884C6.412 29.729 1.961 19.831 4.76 4.444 11.063 2.029 17.928 2 18 2c.071 0 6.958.04 13.24 2.444 2.799 15.387-1.652 25.285-13.24 29.44z"/><path fill="#269" d="M31.24 4.444C24.958 2.04 18.071 2 18 2v31.884c11.588-4.155 16.039-14.053 13.24-29.44z"/></svg>
+</svg>

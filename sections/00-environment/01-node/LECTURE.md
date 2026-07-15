@@ -5,6 +5,8 @@ docs: true
 
 # Node.js のセットアップ
 
+![Node.js のセットアップ](./images/00-thumbnail.svg)
+
 このハンズオンでは、各レクチャーのコマンド（`npm` / `npx wrangler`）を動かすために **Node.js** を
 使います。当日スムーズに進めるため、事前にインストールしておいてください。
 

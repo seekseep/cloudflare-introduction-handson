@@ -5,6 +5,8 @@ docs: true
 
 # Pages でフロントを公開する
 
+![Pages でフロントを公開する](./images/00-thumbnail.svg)
+
 アプリの公開で最初にやることは、多くの場合「画面（フロント）を見られる状態にする」ことです。
 ここでは「ひとことボード」の HTML / CSS を **Cloudflare Pages** に公開し、世界中からアクセスできる URL を手に入れます。
 

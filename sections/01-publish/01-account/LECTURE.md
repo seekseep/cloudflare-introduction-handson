@@ -5,6 +5,8 @@ docs: true
 
 # Cloudflare アカウントを作る
 
+![Cloudflare アカウントを作る](./images/00-thumbnail.svg)
+
 Web サイトを公開する最初の一歩として、公開先となる **Cloudflare アカウント** を作り、CLI（wrangler）から
 操作できる状態にします。ここが整えば、あとはコマンドひとつでインターネットに公開できるようになります。
 

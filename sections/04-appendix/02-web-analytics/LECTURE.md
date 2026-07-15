@@ -5,6 +5,8 @@ docs: true
 
 # Web Analytics でアクセス解析
 
+![Web Analytics でアクセス解析](./images/00-thumbnail.svg)
+
 サイトを公開したら、次に気になるのは「どれくらい見られているのか」です。Cloudflare Web Analytics を使うと、プライバシーに配慮しながら、ページビューや訪問者数、参照元といったアクセス状況を手軽に把握できます。このレクチャーでは、これまでに公開した「ひとことボード」に Web Analytics を組み込み、アクセス解析を始める方法を学びます。
 
 ### Cloudflare Web Analytics とは
