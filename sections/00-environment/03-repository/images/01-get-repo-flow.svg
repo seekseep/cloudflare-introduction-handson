@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker></defs>
+<rect x="0" y="0" width="960" height="360" fill="#ffffff"/>
+<text x="480" y="40" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">2 通りの方法で入手 → VSCode で開く</text>
+<!-- GitHub (source) -->
+<rect x="40" y="140" width="180" height="80" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="130" y="175" text-anchor="middle" font-size="19" fill="#0f172a" font-weight="700">GitHub</text>
+<text x="130" y="200" text-anchor="middle" font-size="15" fill="#475569" font-weight="600">リポジトリ ☁️</text>
+<!-- folder (merge) -->
+<rect x="410" y="140" width="200" height="80" rx="16" fill="#e0f2fe" stroke="#38bdf8" stroke-width="3.5"/>
+<text x="510" y="172" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="700">手元のフォルダ 📁</text>
+<text x="510" y="198" text-anchor="middle" font-size="13" fill="#475569" font-weight="600">cloudflare-introduction-handson</text>
+<!-- VSCode (goal) -->
+<rect x="780" y="140" width="150" height="80" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="855" y="175" text-anchor="middle" font-size="19" fill="#0f172a" font-weight="700">VSCode</text>
+<text x="855" y="200" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">💻</text>
+<!-- split: GitHub -> folder, path A (upper) -->
+<path d="M220 165 Q 315 110 410 158" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="315" y="98" text-anchor="middle" font-size="16" fill="#0f172a" font-weight="600">方法A: git clone</text>
+<!-- split: GitHub -> folder, path B (lower) -->
+<path d="M220 195 Q 315 250 410 202" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="315" y="278" text-anchor="middle" font-size="16" fill="#0f172a" font-weight="600">方法B: ZIP をダウンロード</text>
+<!-- folder -> VSCode -->
+<path d="M610 180 L 775 180" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="692" y="166" text-anchor="middle" font-size="16" fill="#0f172a" font-weight="600">VSCode で開く</text>
+</svg>
