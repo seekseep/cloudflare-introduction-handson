@@ -49,11 +49,7 @@ form.addEventListener('submit', async (e) => {
     body: JSON.stringify({ name, body }),
   });
   const created = await res.json();
-  // この章ではサーバーが保存しない（saved: false）。画面だけに反映して案内を出す。
-  if (created.saved === false) {
-    showNote('投稿を受け取りました（が、この章ではまだ保存されません。次章の D1 で保存します）。');
-  }
-  renderMessages([{ name, body }, ...await fetchCurrent()]);
+  showNote('投稿の作成は成功しました（保存はされていません）');
   form.reset();
 });
 

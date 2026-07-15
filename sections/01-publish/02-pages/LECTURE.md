@@ -37,7 +37,9 @@ cd sections/01-publish/02-pages
 npm install
 ```
 
-> VSCode で開いている場合は、　``Ctrl + ` ``　（バッククォート）でターミナルを開くとリポジトリのルートにいることが多いです。`pwd`（Windows は `cd`）で今いる場所を確認できます。
+:::notice
+VSCode で開いている場合は、　``Ctrl + ` ``　（バッククォート）でターミナルを開くとリポジトリのルートにいることが多いです。`pwd`（Windows は `cd`）で今いる場所を確認できます。
+:::
 
 同じ `02-pages` フォルダのまま、ローカルプレビューを起動します。
 
@@ -80,7 +82,7 @@ npx wrangler pages deploy ./public
 初めて実行すると、wrangler が対話で質問してきます。
 
 1. **プロジェクトを選ぶ / 新規作成** → 新規作成を選ぶ
-2. **プロジェクト名** → 他の人と重複しない名前を入力（例: `hitokoto-board-tanaka`）。これが公開 URL になる
+2. **プロジェクト名** → 他の人と重複しない名前を入力（例: `hitokoto-tanaka-02-pages`）。これが公開 URL になる
 3. **本番ブランチ名** → 聞かれたら `main` でOK
 
 つまり「**公開フォルダ（引数）**」と「**プロジェクト名（対話）**」の 2 つを渡しただけです。しばらくすると
@@ -92,7 +94,9 @@ npx wrangler pages deploy ./public
 <!-- genfig: 左に「ローカル(💻)」、その中に公開フォルダ「./public(📁)」を内包(CONTAINER)。中央のクラウド「Cloudflare Pages(☁️)」へ向けて connector を引き、ラベルは「wrangler pages deploy（アップロード）」。右に成果物としての公開 URL「<name>.pages.dev(🌐)」を置き、Pages から connector で結びラベル「配信」。左→中→右の一方向フロー。イメージスキーマ = SOURCE-PATH-GOAL + CONTAINER。絵文字割当: ローカル=💻 / 公開フォルダ=📁 / Cloudflare Pages=☁️ / 公開URL=🌐。 -->
 *図: ローカルの `./public` を Pages にアップロード（Direct Upload）すると、`<name>.pages.dev` で配信される。*
 
-> 毎回フォルダの指定やプロジェクト名の入力をするのが面倒な場合は、これらを設定ファイルにまとめておけます。詳しくは [設定ファイル `wrangler.jsonc` とは](#設定ファイル-wranglerjsonc-とは) を参照してください。
+:::notice
+毎回フォルダの指定やプロジェクト名の入力をするのが面倒な場合は、これらを設定ファイルにまとめておけます。詳しくは [設定ファイル `wrangler.jsonc` とは](#設定ファイル-wranglerjsonc-とは) を参照してください。
+:::
 
 ### TODO 3: 直して再デプロイする
 
@@ -121,7 +125,7 @@ npx wrangler pages deploy ./public
 
 1. [Cloudflare ダッシュボード](https://dash.cloudflare.com/) を開く
 2. 左メニューの **Compute (Workers)** → **Workers & Pages** を開く
-3. 一覧から今回作ったプロジェクト（`hitokoto-board-あなたの名前`）を選ぶ
+3. 一覧から今回作ったプロジェクト（`hitokoto-あなたの名前-02-pages`）を選ぶ
 4. **Settings（設定）** タブを開き、一番下までスクロール
 5. **Delete project（プロジェクトを削除）** を押す。確認のためプロジェクト名の入力を求められるので、
    同じ名前を入力して削除を確定する
@@ -140,7 +144,7 @@ npx wrangler pages project list
 表示された中から削除したいプロジェクト名を確認し、名前を指定して削除します。
 
 ```bash
-npx wrangler pages project delete hitokoto-board-あなたの名前
+npx wrangler pages project delete hitokoto-あなたの名前-02-pages
 ```
 
 確認のメッセージが出るので `y` で進めます（`--yes` を付けると確認を省略できますが、消し間違いを防ぐため
@@ -148,7 +152,7 @@ npx wrangler pages project delete hitokoto-board-あなたの名前
 
 ```bash
 # 確認を省略して一気に消す場合（取り扱い注意）
-npx wrangler pages project delete hitokoto-board-あなたの名前 --yes
+npx wrangler pages project delete hitokoto-あなたの名前-02-pages --yes
 ```
 
 削除後にもう一度 `npx wrangler pages project list` を実行し、一覧から消えていれば完了です。
@@ -181,7 +185,7 @@ TODO 2 では、公開のたびに「公開フォルダ（`./public`）」を引
 {
   // wrangler.jsonc は JSONC（コメントが書ける JSON）です
   // Cloudflare 上のプロジェクト名。公開 URL は https://<name>.pages.dev になります
-  "name": "hitokoto-board-あなたの名前",
+  "name": "hitokoto-あなたの名前-02-pages",
   // 公開する静的ファイルのフォルダ
   "pages_build_output_dir": "./public"
 }
@@ -202,7 +206,8 @@ TODO 2 では、公開のたびに「公開フォルダ（`./public`）」を引
 npx wrangler pages deploy
 ```
 
-「アプリを作る」セクション（Workers / D1）のレクチャーでは、最初からこの `wrangler.jsonc` を使って公開していきます。
+「アプリを作る」セクション（Workers / D1）のレクチャーでは、各章に用意した `wrangler.example.jsonc` を
+`wrangler.jsonc` にコピーし、`name` を自分用に書き換えてから公開していきます。
 
 ### npm scripts でコマンドを短くする
 

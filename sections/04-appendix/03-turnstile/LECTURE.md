@@ -89,8 +89,10 @@ if (!outcome.success) {
 `2x00000000000000000000AB` に書き換えて保存し、もう一度送信してみましょう。今度はサーバー側の検証で
 弾かれ、403（送信できませんでした）になります。確認できたら元のキーに戻します。
 
-> トークンを使い回すと `timeout-or-duplicate` で失敗します。エラー時はウィジェットをリセット
-> （`turnstile.reset()`）して取り直すのが定石です。
+:::notice
+トークンを使い回すと `timeout-or-duplicate` で失敗します。エラー時はウィジェットをリセット
+（`turnstile.reset()`）して取り直すのが定石です。
+:::
 
 ### TODO 4: 本番で使う（任意）
 
@@ -121,8 +123,10 @@ CAPTCHA といえば Google の **reCAPTCHA** が長らく定番でした。Turn
 reCAPTCHA は高機能だが **Google への依存とトラッキング懸念** が付いて回る点です。導入の流れ
 （フロントにウィジェット、サーバーでトークン検証）はどちらもよく似ています。
 
-> 無料枠の上限や料金は変動します。最新の数値は必ず [Turnstile の公式ページ](https://www.cloudflare.com/products/turnstile/)
-> や reCAPTCHA の公式ページで確認してください。
+:::notice
+無料枠の上限や料金は変動します。最新の数値は必ず [Turnstile の公式ページ](https://www.cloudflare.com/products/turnstile/)
+や reCAPTCHA の公式ページで確認してください。
+:::
 
 ### sitekey は公開・secret は秘密
 

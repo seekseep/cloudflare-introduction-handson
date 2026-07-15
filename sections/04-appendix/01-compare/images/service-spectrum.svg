@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="1000" height="470" fill="#ffffff"/>
+<line x1="90" y1="74" x2="910" y2="74" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)" marker-start="url(#aR)"/>
+<text x="90" y="46" text-anchor="start" font-size="21" fill="#0f172a" font-weight="700">自由・自己管理</text>
+<text x="910" y="46" text-anchor="end" font-size="21" fill="#0f172a" font-weight="700">手軽・おまかせ</text>
+<svg x="160" y="142" width="80" height="80" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M36 22c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v18z"/><path fill="#5DADEC" d="M4 4h28v18H4z"/><path fill="#CCD6DD" d="M13 26h10v6H13z"/><path fill="#9AAAB4" d="M13 26h10v2H13z"/><path fill="#E1E8ED" d="M36 33c0-1.657-1.343-3-3-3H3c-1.657 0-3 1.343-3 3s1.343 3 3 3h30c1.657 0 3-1.343 3-3z"/><path fill="#F5F8FA" d="M3 32h2v2H3zm4 0h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+<text x="200" y="242" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">VPS / IaaS</text>
+<text x="200" y="270" text-anchor="middle" font-size="15" fill="#475569" font-weight="400">サーバーを1台借りる</text>
+<rect x="75.0" y="290" width="250" height="96" rx="14" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="200" y="316" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">例</text>
+<text x="200" y="342" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">さくらのVPS</text>
+<text x="200" y="366" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">AWS EC2</text>
+<svg x="460" y="142" width="80" height="80" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M27 8c-.701 0-1.377.106-2.015.298.005-.1.015-.197.015-.298 0-3.313-2.687-6-6-6-2.769 0-5.093 1.878-5.785 4.427C12.529 6.154 11.783 6 11 6c-3.314 0-6 2.686-6 6 0 3.312 2.686 6 6 6 2.769 0 5.093-1.878 5.785-4.428.686.273 1.432.428 2.215.428.375 0 .74-.039 1.096-.104-.058.36-.096.727-.096 1.104 0 3.865 3.135 7 7 7s7-3.135 7-7c0-3.866-3.135-7-7-7z"/><path fill="#E1E8ED" d="M31 22c-.467 0-.91.085-1.339.204.216-.526.339-1.1.339-1.704 0-2.485-2.015-4.5-4.5-4.5-1.019 0-1.947.351-2.701.921C22.093 14.096 19.544 12 16.5 12c-2.838 0-5.245 1.822-6.131 4.357C9.621 16.125 8.825 16 8 16c-4.418 0-8 3.582-8 8 0 4.419 3.582 8 8 8h23c2.762 0 5-2.238 5-5s-2.238-5-5-5z"/></svg>
+<text x="500" y="242" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">PaaS・サーバーレス</text>
+<text x="500" y="270" text-anchor="middle" font-size="15" fill="#475569" font-weight="400">アプリを置く台を借りる</text>
+<rect x="375.0" y="290" width="250" height="96" rx="14" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
+<text x="500" y="316" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">例</text>
+<text x="500" y="342" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">Cloudflare Workers</text>
+<text x="500" y="366" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">Pages / Vercel</text>
+<svg x="760" y="142" width="80" height="80" viewBox="0 0 36 36"><path fill="#31373D" d="M11 36s-4 0-4-4V4s0-4 4-4h14s4 0 4 4v28s0 4-4 4H11z"/><path fill="#55ACEE" d="M9 5h18v26H9z"/></svg>
+<text x="800" y="242" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">SaaS</text>
+<text x="800" y="270" text-anchor="middle" font-size="15" fill="#475569" font-weight="400">完成品を使うだけ</text>
+<rect x="675.0" y="290" width="250" height="96" rx="14" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="800" y="316" text-anchor="middle" font-size="13" fill="#475569" font-weight="400">例</text>
+<text x="800" y="342" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">Gmail / Notion</text>
+<text x="800" y="366" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">freee</text>
+</svg>

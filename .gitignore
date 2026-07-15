@@ -8,6 +8,11 @@ node_modules/
 !.dev.vars.example
 .env
 
+# 受講者が各自コピーして名前を入れる設定。テンプレート(wrangler.example.jsonc)だけ追跡する
+sections/03-build-app/01-workers/wrangler.jsonc
+sections/03-build-app/02-d1/wrangler.jsonc
+sections/03-build-app/03-r2/wrangler.jsonc
+
 # secrets
 *.pem
 *.key

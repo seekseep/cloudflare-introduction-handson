@@ -11,10 +11,10 @@
 ## 構成
 
 ```text
-src/index.js   Worker 本体（Hono の API。GET/POST /api/messages）
-public/        フロント（API を呼び出す。前章とほぼ同じ）
-wrangler.jsonc Worker の設定（name・main・compatibility_date）
-package.json   npm scripts と依存（hono）
+src/index.js           Worker 本体（Hono の API。GET/POST /api/messages）
+public/                フロント（API を呼び出す。前章とほぼ同じ）
+wrangler.example.jsonc Worker 設定のテンプレート（コピーして wrangler.jsonc を作る）
+package.json           npm scripts と依存（hono）
 ```
 
 ## 起動方法
@@ -22,6 +22,9 @@ package.json   npm scripts と依存（hono）
 API（Worker）とフロントは別々に起動します。**ターミナルを2つ**使います。
 
 ### 準備
+
+同じフォルダ上で `wrangler.example.jsonc` を複製し、複製した方の名前を `wrangler.jsonc` に変更します。
+開いて `name` を自分用に書き換えてください（例: `hitokoto-tanaka-01-workers`）。
 
 ```bash
 npm install

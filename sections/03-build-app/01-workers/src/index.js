@@ -39,7 +39,7 @@ app.post('/api/messages', async (c) => {
   }
 
   // 本来はここで DB に保存する。今はまだ保存先がないので、受け取った内容を返すだけ。
-  return c.json({ id: null, name, body, saved: false }, 201);
+  return c.json({ id: null, name, body }, 201);
 });
 
 export default app;

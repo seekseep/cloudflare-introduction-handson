@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // このファイルはテンプレート（見本）です。直接は使いません。
+  // まず、このファイルを同じフォルダ上で複製し、複製した方の名前を wrangler.jsonc に変更してから、
+  // その name を書き換えてください。
+  // wrangler.jsonc は .gitignore 済みなので、あなたの名前入りの設定はコミットされません。
+  //
+  // Worker の名前。公開 URL は https://<name>.<あなたのサブドメイン>.workers.dev になります。
+  // 他の人とぶつからないよう「あなたの名前」の部分を自分用に書き換えてください（例: hitokoto-tanaka-01-workers）。
+  "name": "hitokoto-あなたの名前-01-workers",
+  // Worker の入口ファイル
+  "main": "src/index.js",
+  // ランタイムの基準日。新しいほど新しい機能が使えます（直近の日付でOK）。
+  "compatibility_date": "2026-06-01",
+  // ログやメトリクスを有効化（運用で役立つ。後半のセクションで触れます）
+  "observability": { "enabled": true }
+}

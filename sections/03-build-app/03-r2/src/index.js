@@ -66,7 +66,7 @@ app.post('/api/messages', async (c) => {
     .run();
 
   return c.json(
-    { id: result.meta.last_row_id, name, body, image_key: imageKey, saved: true },
+    { id: result.meta.last_row_id, name, body, image_key: imageKey },
     201,
   );
 });

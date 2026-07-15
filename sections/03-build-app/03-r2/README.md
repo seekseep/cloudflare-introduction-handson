@@ -9,16 +9,19 @@
 ## 構成
 
 ```text
-src/index.js          Worker（D1 + R2 を読み書きする API）
+src/index.js              Worker（D1 + R2 を読み書きする API）
 migrations/0001_init.sql  テーブル定義（image_key 列つき）
-public/               フロント（画像つきで投稿・表示）
-wrangler.jsonc        Worker + D1 binding + R2 binding の設定
-package.json          npm scripts（dev / deploy / db:* / bucket:create）
+public/                   フロント（画像つきで投稿・表示）
+wrangler.example.jsonc    Worker + D1 + R2 binding 設定のテンプレート（コピーして wrangler.jsonc を作る）
+package.json              npm scripts（dev / deploy / db:* / bucket:create）
 ```
 
 ## 起動方法
 
 ### 準備
+
+同じフォルダ上で `wrangler.example.jsonc` を複製し、複製した方の名前を `wrangler.jsonc` に変更します。
+開いて `name` を自分用に書き換えてください（例: `hitokoto-tanaka-03-r2`）。
 
 ```bash
 npm install

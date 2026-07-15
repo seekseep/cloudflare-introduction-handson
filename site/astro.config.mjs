@@ -1,10 +1,21 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import rehypeExternalLinks from 'rehype-external-links';
 import remarkCallout from './src/plugins/remark-callout.mjs';
+import remarkQuestions from './src/plugins/remark-questions.mjs';
 
 const repoUrl = 'https://github.com/seekseep/cloudflare-introduction-handson';
+
+// ◯✕クイズ（`:::questions`）の client スクリプト。全ページの <head> に inline で
+// 注入し、`.quiz` が無いページでは何もしない。別ファイル参照だと base の解決や
+// バンドルの都合が絡むので、内容をそのまま埋め込む。
+const quizClient = readFileSync(
+  fileURLToPath(new URL('./src/scripts/quiz-client.js', import.meta.url)),
+  'utf8',
+);
 
 /**
  * カスタム callout（remark-callout.mjs）を Starlight 標準の asides より「前」に
@@ -20,6 +31,8 @@ function calloutIntegration() {
     hooks: {
       'astro:config:setup': ({ config }) => {
         config.markdown.processor?.options.remarkPlugins.push(remarkCallout);
+        // `:::questions` の変換。名前衝突は無いので順序は問わない。
+        config.markdown.processor?.options.remarkPlugins.push(remarkQuestions);
       },
     },
   };
@@ -48,7 +61,11 @@ export default defineConfig({
     starlight({
       title: 'Cloudflare 公開・運用ハンズオン',
       description: 'Cloudflareの無料プランでアプリを公開・運用する流れと、公開時のセキュリティの要点を手を動かして学ぶ',
-      customCss: ['./src/styles/external-links.css', './src/styles/callouts.css'],
+      customCss: ['./src/styles/external-links.css', './src/styles/callouts.css', './src/styles/quiz.css'],
+      head: [
+        // ◯✕クイズの client スクリプトを全ページに注入する。
+        { tag: 'script', content: quizClient },
+      ],
       defaultLocale: 'root',
       locales: {
         root: { label: '日本語', lang: 'ja' },
