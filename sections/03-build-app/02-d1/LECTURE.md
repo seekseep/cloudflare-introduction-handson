@@ -28,6 +28,7 @@ docs: true
 3. Worker から D1 に読み書きするコードを読む
 4. ローカルで投稿が保存されることを確認する
 5. 本番に公開して、インターネット越しに保存できることを確認する
+6. 不要になったリソース（Worker / D1）を削除する
 
 ## 学ぶこと
 
@@ -141,6 +142,31 @@ npx wrangler deploy
 ```bash
 npx wrangler d1 execute hitokoto-db --remote --command "SELECT * FROM messages"
 ```
+
+### TODO 6: 公開したものを削除する
+
+ここまでで作った Worker と D1 データベースは、不要になったら削除できます。削除の方法は、前章までに
+見た **ダッシュボード（画面）** と **CLI（コマンド）** のどちらでも構いません。やりやすい方で消してください。
+
+:::danger
+削除は元に戻せません。消すのは「このハンズオンで作った練習用のもの」だけにしてください。
+:::
+
+CLI（コマンド）で消す場合は次のとおりです。
+
+```bash
+npx wrangler delete                      # この章の Worker を削除
+npx wrangler d1 delete hitokoto-db       # D1 データベースを削除
+```
+
+ダッシュボードから消す場合は、**Workers & Pages** で Worker を、**Storage & Databases → D1** で
+データベースを、それぞれ選んで削除します。
+
+:::notice
+**次章の R2 に進むなら、D1（`hitokoto-db`）は残しておいて構いません。** 次章では同じ `hitokoto-db` を
+再利用します。ここで消した場合は、次章の TODO 1 でもう一度 `npx wrangler d1 create hitokoto-db` を
+実行して作り直し、新しい `database_id` を `wrangler.jsonc` に貼り直してください。
+:::
 
 ## まとめ
 
