@@ -7,10 +7,10 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "front": "wrangler pages dev ./public --port 8788",
-    "db:create": "wrangler d1 create hitokoto-db",
-    "db:migrate:local": "wrangler d1 migrations apply hitokoto-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db --remote",
-    "bucket:create": "wrangler r2 bucket create hitokoto-images"
+    "db:create": "wrangler d1 create hitokoto-db-03-r2",
+    "db:migrate:local": "wrangler d1 migrations apply hitokoto-db-03-r2 --local",
+    "db:migrate:remote": "wrangler d1 migrations apply hitokoto-db-03-r2 --remote",
+    "bucket:create": "wrangler r2 bucket create hitokoto-images-03-r2"
   },
   "dependencies": {
     "hono": "^4.7.0"

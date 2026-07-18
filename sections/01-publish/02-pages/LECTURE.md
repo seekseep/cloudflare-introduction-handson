@@ -93,13 +93,14 @@ npx wrangler pages deploy ./public
 2. **プロジェクト名** → 他の人と重複しない名前を入力（例: `hitokoto-tanaka-02-pages`）。これが公開 URL になる
 3. **本番ブランチ名** → 聞かれたら `main` でOK
 
-つまり「**公開フォルダ（引数）**」と「**プロジェクト名（対話）**」の 2 つを渡しただけです。しばらくすると
-公開 URL（`https://<name>.pages.dev`）が表示されます。ブラウザで開いて、さっきと同じ画面がインターネット
-上に出ていれば成功です。スマホからも開いてみましょう。
+つまり「**公開フォルダ（引数）**」と「**プロジェクト名（対話）**」の 2 つを渡します。
+
+しばらくすると公開 URL（`https://<name>.pages.dev`）が表示されます。ブラウザで開いて、さっきと同じ画面がインターネット上に出ていれば成功です。
+
+スマホからも開いてみましょう。
 
 ![ローカルの public フォルダを Cloudflare Pages にアップロードすると公開 URL で配信される流れ](./images/01-direct-upload-flow.svg)
 
-<!-- genfig: 左に「ローカル(💻)」、その中に公開フォルダ「./public(📁)」を内包(CONTAINER)。中央のクラウド「Cloudflare Pages(☁️)」へ向けて connector を引き、ラベルは「wrangler pages deploy（アップロード）」。右に成果物としての公開 URL「<name>.pages.dev(🌐)」を置き、Pages から connector で結びラベル「配信」。左→中→右の一方向フロー。イメージスキーマ = SOURCE-PATH-GOAL + CONTAINER。絵文字割当: ローカル=💻 / 公開フォルダ=📁 / Cloudflare Pages=☁️ / 公開URL=🌐。 -->
 *図: ローカルの `./public` を Pages にアップロード（Direct Upload）すると、`<name>.pages.dev` で配信される。*
 
 :::notice
@@ -109,8 +110,7 @@ npx wrangler pages deploy ./public
 ### TODO 3: 直して再デプロイする
 
 [public/index.html](./public/index.html) の見出しやサンプルのひとことを書き換えて、`02-pages`
-フォルダでもう一度デプロイしてみましょう。`./public` を指定し、プロジェクトは **さっき作ったものを選ぶ**
-だけです。数十秒で URL の内容が更新されます。
+フォルダでもう一度デプロイしてみましょう。`./public` を指定し、プロジェクトは **さっき作ったもの**　を選んでください。数十秒で URL の内容が更新されます。
 
 ```bash
 npx wrangler pages deploy ./public
@@ -133,8 +133,7 @@ npx wrangler pages deploy ./public
 2. 左メニューの **Compute (Workers)** → **Workers & Pages** を開く
 3. 一覧から今回作ったプロジェクト（`hitokoto-あなたの名前-02-pages`）を選ぶ
 4. **Settings（設定）** タブを開き、一番下までスクロール
-5. **Delete project（プロジェクトを削除）** を押す。確認のためプロジェクト名の入力を求められるので、
-   同じ名前を入力して削除を確定する
+5. **Delete project（プロジェクトを削除）** を押す。確認のためプロジェクト名の入力を求められるので、同じ名前を入力して削除を確定する
 
 :::notice
 削除には、この **ダッシュボード（画面）** からの方法のほかに、**CLI（コマンド）** から消す方法もあります。
@@ -146,11 +145,17 @@ npx wrangler pages deploy ./public
 
 ### フロントエンドとバックエンド
 
+![左のフロントエンド（ブラウザ）と右のバックエンド（API・データベース）がリクエストとレスポンスで往復する](./images/04-frontend-backend.svg)
+
 フロントエンドとは、ユーザーが直接触れる部分のことです。ブラウザで表示される画面や、スマホアプリの見た目・操作部分がこれにあたります。
 バックエンドとは、ユーザーが直接触れない部分で、データの保存や処理を行うサーバー側のことです。API やデータベースの操作などがこれに含まれます。
 
 例えば、HTMLやCSSで作られた「ひとことボード」の画面はフロントエンドです。ユーザーが投稿ボタンを押すと、バックエンドの API が呼ばれてデータベースに保存されます。フロントエンドは見た目や操作性を提供し、バックエンドはデータの管理や処理を担当します。
 
+![左のフロントエンド（ブラウザ／画面・操作）から右のバックエンド（API・データベース）へリクエストを送り、レスポンスが返る関係図](./images/04-frontend-backend.svg)
+
+<!-- genfig: 左「フロントエンド=ブラウザ(🌐)」右「バックエンド=API(六角形)＋データベース(シリンダー)」を CONTAINER で囲み、往路「リクエスト」濃い矢印・復路「レスポンス」薄い矢印で結ぶ。イメージスキーマ = CONTAINER + SOURCE-PATH-GOAL + CYCLE。build: genfig/scratch_frontend_backend.py -->
+*図: フロントエンド（見た目・操作）が「リクエスト」を送り、バックエンド（API・データベース）が処理して「レスポンス」を返す。*
 
 ### Cloudflare Pages に向いているものは
 
@@ -160,63 +165,51 @@ QRコードの生成やBMIの計算、テトリスのようなゲームなどの
 
 ### 設定ファイル `wrangler.jsonc` とは
 
-TODO 2 では、公開のたびに「公開フォルダ（`./public`）」を引数で渡し、「プロジェクト名」を対話で
-入力しました。この **毎回必要な情報を保存しておく** のが `wrangler.jsonc` という設定ファイルです。
-
-`02-pages` フォルダの直下に、次の内容で `wrangler.jsonc` を作成します（`name` は自分が作った
-プロジェクト名に合わせます）。
+公開のたびに引数や対話で渡していた情報を **保存しておく** のが `wrangler.jsonc` です。`02-pages` フォルダ直下に次の内容で作成します（`name` は自分のプロジェクト名に合わせます）。
 
 ```jsonc
 {
-  // wrangler.jsonc は JSONC（コメントが書ける JSON）です
-  // Cloudflare 上のプロジェクト名。公開 URL は https://<name>.pages.dev になります
-  "name": "hitokoto-あなたの名前-02-pages",
-  // 公開する静的ファイルのフォルダ
+  "name": "hitokoto-{あなたの名前}-02-pages",
   "pages_build_output_dir": "./public"
 }
 ```
 
-見比べると分かるとおり、`name` と `pages_build_output_dir` は、さっき **対話で答えた「プロジェクト名」と
-引数で渡した「公開フォルダ」がそのまま入っている** だけです。これが Pages デプロイの基本構造です。
+あなたの名前が `tanaka` なら、次のように変更します
+
+```jsonc
+{
+  "name": "hitokoto-tanaka-02-pages",
+  "pages_build_output_dir": "./public"
+}
+```
+
+`name` は **対話で答えたプロジェクト名**、`pages_build_output_dir` は **引数で渡した公開フォルダ** が、そのまま入っています。
 
 ![対話で答えたプロジェクト名と引数で渡した公開フォルダが、そのまま wrangler.jsonc の2項目に対応する](./images/02-args-to-config.svg)
 
-<!-- genfig: 左列にデプロイ時に渡した2つの値「プロジェクト名（対話）」「公開フォルダ ./public（引数）」を上下に並べる。右列に設定ファイル「wrangler.jsonc(📜)」を CONTAINER として描き、その中に「name」「pages_build_output_dir」の2行を入れる。左の各項目から右の対応する行へ水平 connector を引き、上の connector ラベル「= name」、下の connector ラベル「= pages_build_output_dir」。左→右の対応マッピング。イメージスキーマ = PART-WHOLE + BALANCE（左右対応）。絵文字割当: 設定ファイル=📜 / 公開フォルダ=📁。 -->
-*図: デプロイ時に渡した「プロジェクト名」と「公開フォルダ」が、そのまま `wrangler.jsonc` の 2 項目に対応する。*
-
-設定ファイルがあると、wrangler はそこから 2 つの情報を読み取るので、次回からは **引数も対話もなしで**
-コマンド一発で公開できます。
+設定ファイルがあれば、次回からは **引数も対話もなしで** コマンド一発で公開できます。
 
 ```bash
 npx wrangler pages deploy
 ```
 
-「アプリを作る」セクション（Workers / D1）のレクチャーでは、各章に用意した `wrangler.example.jsonc` を
-`wrangler.jsonc` にコピーし、`name` を自分用に書き換えてから公開していきます。
-
 ### npm scripts でコマンドを短くする
 
-このレクチャーでは `npx wrangler pages dev ./public` のように **そのままのコマンド** を打ってきました。
-よく使うコマンドは [package.json](./package.json) の `scripts` に名前を付けて登録しておくと、短い名前で
-呼べます。
+よく使うコマンドは [package.json](./package.json) の `scripts` に登録しておくと、短い名前で呼べます。
 
 ```jsonc
 {
   "scripts": {
-    "dev": "wrangler pages dev ./public",       // npm run dev
-    "deploy": "wrangler pages deploy ./public"  // npm run deploy
+    "dev": "wrangler pages dev ./public",
+    "deploy": "wrangler pages deploy ./public"
   }
 }
 ```
 
 ```bash
-npm run dev      # = npx wrangler pages dev ./public
-npm run deploy   # = npx wrangler pages deploy ./public
+npm run dev
+npm run deploy
 ```
-
-このフォルダの `package.json` には最初からこの scripts が入っているので、`npm run dev` のように呼んでも
-同じことが動きます。本ハンズオンでは中で何が動くかを見せるため、レクチャー本文ではあえて
-`npx wrangler ...` の形で書いています。
 
 ## 次の章へ
 

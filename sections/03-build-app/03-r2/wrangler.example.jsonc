@@ -11,21 +11,21 @@
   "compatibility_date": "2026-06-01",
   "observability": { "enabled": true },
   // D1（SQLite データベース）の binding。前章 02-d1 と同じデータベースを使う。
-  // database_id は `npx wrangler d1 create hitokoto-db` で作ったときに表示される ID を貼る。
+  // database_id は `npx wrangler d1 create hitokoto-db-03-r2` で作ったときに表示される ID を貼る。
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "hitokoto-db",
+      "database_name": "hitokoto-db-03-r2",
       "database_id": "ここに wrangler d1 create の出力IDを貼る",
       "migrations_dir": "migrations"
     }
   ],
   // R2（オブジェクトストレージ）の binding。
-  // bucket_name は `npx wrangler r2 bucket create hitokoto-images` で作ったバケット名。
+  // bucket_name は `npx wrangler r2 bucket create hitokoto-images-03-r2` で作ったバケット名。
   "r2_buckets": [
     {
       "binding": "BUCKET",
-      "bucket_name": "hitokoto-images"
+      "bucket_name": "hitokoto-images-03-r2"
     }
   ]
 }

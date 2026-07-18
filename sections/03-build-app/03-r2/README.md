@@ -30,8 +30,8 @@ npm install
 ### D1 と R2 を作る
 
 ```bash
-npm run db:create          # = wrangler d1 create hitokoto-db
-npm run bucket:create      # = wrangler r2 bucket create hitokoto-images
+npm run db:create          # = wrangler d1 create hitokoto-db-03-r2
+npm run bucket:create      # = wrangler r2 bucket create hitokoto-images-03-r2
 ```
 
 `db:create` で表示された `database_id` を [wrangler.jsonc](./wrangler.jsonc) の `database_id` に貼り付けます。

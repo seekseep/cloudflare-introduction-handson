@@ -30,7 +30,7 @@ npm install
 ### D1 データベースを作る
 
 ```bash
-npm run db:create        # = wrangler d1 create hitokoto-db
+npm run db:create        # = wrangler d1 create hitokoto-db-02-d1
 ```
 
 表示された `database_id` を [wrangler.jsonc](./wrangler.jsonc) の `database_id` に貼り付けます。
@@ -40,7 +40,7 @@ npm run db:create        # = wrangler d1 create hitokoto-db
 `schema.sql` をローカル D1 に流します。
 
 ```bash
-npm run db:setup     # = wrangler d1 execute hitokoto-db --local --file=./schema.sql
+npm run db:setup     # = wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
 ```
 
 ### 起動（ターミナル2つ）
