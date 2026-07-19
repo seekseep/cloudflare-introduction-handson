@@ -90,7 +90,17 @@ Pages に公開するとき、wrangler が最低限知りたいのは次の **2 
 まずはこの 2 つを設定ファイルなしで、コマンドと対話で渡してみます。公開フォルダは引数で指定します。
 
 ```bash
-npx wrangler pages deploy ./public
+% npx wrangler pages deploy ./public
+
+ ⛅️ wrangler 4.112.0
+────────────────────
+✔ The project you specified does not exist: "hitokoto-<name>-02-pages". Would you like to create it? › Create a new project
+✔ Enter the production branch name: … main
+✨ Successfully created the 'hitokoto-<name>-02-pages' project.
+✨ Success! Uploaded 2 files (2.36 sec)
+
+🌎 Deploying...
+✨ Deployment complete! Take a peek over at https://4855e81e.hitokoto-<name>-02-pages.pages.dev
 ```
 
 初めて実行すると、wrangler が対話で質問してきます。
