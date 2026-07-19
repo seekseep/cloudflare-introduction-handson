@@ -21,3 +21,6 @@ sections/03-build-app/03-r2/wrangler.jsonc
 site/dist/
 site/.astro/
 site/src/content/docs/
+
+# 生成物: 各レクチャーのプロジェクト ZIP (build-downloads.mjs)
+site/public/downloads/

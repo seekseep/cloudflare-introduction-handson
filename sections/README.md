@@ -21,7 +21,6 @@ sidebar:
 
 - [開発ツール（エディタ / ブラウザ）](./00-environment/01-tools/LECTURE.md)
 - [Node.js のセットアップ](./00-environment/02-node/LECTURE.md)
-- [リポジトリを入手する](./00-environment/03-repository/LECTURE.md)
 
 > Cloudflare アカウントと wrangler の準備は [01. Cloudflareで公開する](./01-publish/01-account/LECTURE.md) で扱います。
 

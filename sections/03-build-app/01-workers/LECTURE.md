@@ -37,6 +37,19 @@ Workers は、リクエストを受けてプログラムを実行する **サー
 
 ## 説明
 
+### はじめに: プロジェクトを用意する
+
+このレクチャーのサンプルを ZIP で配布しています。次の手順で手元に用意してください。
+
+1. 下の「サンプルコードをダウンロード」ボタンからプロジェクト ZIP をダウンロードする
+2. ダウンロードした ZIP を解凍する（展開すると `01-workers` フォルダができます）
+3. その `01-workers` フォルダを VSCode で開く（File → Open Folder、またはフォルダをドラッグ&ドロップ）
+4. VSCode で[ターミナルを開く](../../00-environment/01-tools/LECTURE.md)。以降のコマンドは、この開いたフォルダ（`01-workers`）の中で実行します。
+
+:::download
+[サンプルコードをダウンロード](./project.zip)
+:::
+
 ### 2つのアプリを動かす
 
 ここからは **フロントのアプリ（Pages）** と **API のアプリ（Workers）** の 2 つを組み合わせて使います。
@@ -64,28 +77,6 @@ Workers は、リクエストを受けてプログラムを実行する **サー
 他の人と同じ名前だと公開時にぶつかるので、必ず自分だけの名前にしてください。
 
 次に、このフォルダで依存をインストールし、Worker を起動します。
-
-:::notice[コマンドの前に：今いるフォルダを確認]
-このレクチャーのコマンドは、すべて `sections/03-build-app/01-workers/` フォルダの中で実行します。コマンドを打つ前に、今いる場所を確認しましょう。
-
-**macOS / Linux**
-
-```bash
-pwd
-```
-
-**Windows（PowerShell）**
-
-```powershell
-cd
-```
-
-表示された末尾が `.../sections/03-build-app/01-workers` になっていれば OK です。違っていたら、リポジトリのルート（`cloudflare-introduction-handson/`）から次で移動します（macOS / Linux / Windows 共通）。
-
-```bash
-cd sections/03-build-app/01-workers
-```
-:::
 
 ```bash
 npm install
@@ -117,26 +108,8 @@ npx wrangler dev
 
 VS Code から 新たにターミナルを起動して、フロントのアプリケーションを起動します。
 
-:::notice[新しいターミナルでも：今いるフォルダを確認]
-ターミナルを新しく開くと、別の場所（多くはリポジトリのルート）から始まることがあります。コマンドを打つ前に、今いる場所を確認しましょう。
-
-**macOS / Linux**
-
-```bash
-pwd
-```
-
-**Windows（PowerShell）**
-
-```powershell
-cd
-```
-
-`.../sections/03-build-app/01-workers` にいなければ、次で移動します（macOS / Linux / Windows 共通）。
-
-```bash
-cd sections/03-build-app/01-workers
-```
+:::notice
+VSCode でこのフォルダを開いていれば、新しく開いたターミナルもこのフォルダの中から始まります。`pwd`（Windows は `cd`）で末尾が `.../01-workers` になっていることを確認しておきましょう。
 :::
 
 ```bash

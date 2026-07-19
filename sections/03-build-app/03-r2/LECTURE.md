@@ -40,6 +40,19 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 
 ## 説明
 
+### はじめに: プロジェクトを用意する
+
+このレクチャーのサンプルを ZIP で配布しています。次の手順で手元に用意してください。
+
+1. 下の「サンプルコードをダウンロード」ボタンからプロジェクト ZIP をダウンロードする
+2. ダウンロードした ZIP を解凍する（展開すると `03-r2` フォルダができます）
+3. その `03-r2` フォルダを VSCode で開く（File → Open Folder、またはフォルダをドラッグ&ドロップ）
+4. VSCode で[ターミナルを開く](../../00-environment/01-tools/LECTURE.md)。以降のコマンドは、この開いたフォルダ（`03-r2`）の中で実行します。
+
+:::download
+[サンプルコードをダウンロード](./project.zip)
+:::
+
 ### TODO 1: R2 バケットを作る
 
 まず、このセクション用の設定ファイル `wrangler.jsonc` を用意します。テンプレートの
@@ -51,28 +64,6 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 この章の D1 の ID を貼り付けます（下のコマンドの出力）。
 
 次に、このフォルダで依存をインストールし、この章で使う D1 と R2 バケットを用意します。
-
-:::notice[コマンドの前に：今いるフォルダを確認]
-このレクチャーのコマンドは、すべて `sections/03-build-app/03-r2/` フォルダの中で実行します。コマンドを打つ前に、今いる場所を確認しましょう。
-
-**macOS / Linux**
-
-```bash
-pwd
-```
-
-**Windows（PowerShell）**
-
-```powershell
-cd
-```
-
-表示された末尾が `.../sections/03-build-app/03-r2` になっていれば OK です。違っていたら、リポジトリのルート（`cloudflare-introduction-handson/`）から次で移動します（macOS / Linux / Windows 共通）。
-
-```bash
-cd sections/03-build-app/03-r2
-```
-:::
 
 ```bash
 npm install
@@ -189,26 +180,8 @@ app.get('/api/images/:key', async (c) => {
 
 ターミナルを 2 つ使います。
 
-:::notice[新しいターミナルでも：今いるフォルダを確認]
-2 つ目のターミナルは、別の場所（多くはリポジトリのルート）から始まることがあります。それぞれのターミナルで、コマンドを打つ前に今いる場所を確認しましょう。
-
-**macOS / Linux**
-
-```bash
-pwd
-```
-
-**Windows（PowerShell）**
-
-```powershell
-cd
-```
-
-`.../sections/03-build-app/03-r2` にいなければ、次で移動します（macOS / Linux / Windows 共通）。
-
-```bash
-cd sections/03-build-app/03-r2
-```
+:::notice
+2 つ目のターミナルも、VSCode でこのフォルダを開いていればこのフォルダの中から始まります。それぞれのターミナルで `pwd`（Windows は `cd`）を実行し、末尾が `.../03-r2` になっていることを確認しておきましょう。
 :::
 
 ```bash

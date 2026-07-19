@@ -10,8 +10,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "sync-lectures": "node scripts/sync-lectures.mjs",
-    "predev": "node scripts/sync-lectures.mjs",
-    "prebuild": "node scripts/sync-lectures.mjs"
+    "build-downloads": "node scripts/build-downloads.mjs",
+    "predev": "node scripts/sync-lectures.mjs && node scripts/build-downloads.mjs",
+    "prebuild": "node scripts/sync-lectures.mjs && node scripts/build-downloads.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.40.0",
@@ -19,5 +20,8 @@
     "rehype-external-links": "^3.0.0",
     "remark-directive": "^4.0.0",
     "sharp": "^0.35.2"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1"
   }
 }

@@ -180,7 +180,7 @@ function resolveSiteUrl(resolved, isDirLink) {
   return null;
 }
 
-function transformLinks(content, sourceDir, sourceSiteUrl) {
+function transformLinks(content, sourceDir, sourceSiteUrl, downloadUrl = null) {
   // 画像 (`![alt](...)`) はソースコードのように blob URL へ飛ばすと、blob は画像
   // 本体ではなく HTML ページを返すため <img> がリンク切れになる。画像だけは
   // 画像バイト列をそのまま返す raw.githubusercontent.com に向ける。
@@ -203,6 +203,11 @@ function transformLinks(content, sourceDir, sourceSiteUrl) {
     const hash = hashPart ? `#${hashPart}` : '';
     const isDirLink = pathPart.endsWith('/');
     const resolved = path.posix.normalize(path.posix.join(sourceDir, pathPart)).replace(/\/$/, '');
+
+    // 本文中の手書きセンチネル `./project.zip` を、生成した配布 ZIP の URL に差し替える。
+    if (downloadUrl && path.posix.basename(resolved) === 'project.zip') {
+      return `${prefix}(${downloadUrl}${hash}${titlePart})`;
+    }
 
     if (PUBLIC_ASSETS.has(path.posix.basename(resolved))) {
       const t = publicTargetFor(resolved);
@@ -248,6 +253,24 @@ function buildFrontmatter({ title, description, sidebarOrder, sidebarLabel, edit
   return lines.join('\n');
 }
 
+/**
+ * レクチャーの source dir がプロジェクト (package.json あり) なら、配布 ZIP の URL を返す。
+ * build-downloads.mjs と同じ命名規約 (<sec>-<lec>.zip)。対象でなければ null。
+ * 本文中に手書きした `./project.zip` リンクを transformLinks でこの URL に差し替えるために使う。
+ */
+async function downloadUrlFor(sourceDir) {
+  const m = sourceDir.match(/^sections\/([\w-]+)\/([\w-]+)$/);
+  if (!m) return null;
+  try {
+    await stat(path.join(ROOT, sourceDir, 'package.json'));
+  } catch (e) {
+    if (e.code === 'ENOENT') return null;
+    throw e;
+  }
+  const [, sec, lec] = m;
+  return `${ASTRO_BASE}/downloads/${sec}-${lec}.zip`;
+}
+
 async function syncFile({
   sourceFile,
   sourceDir,
@@ -266,7 +289,8 @@ async function syncFile({
   const { data: srcFm, body: bodyAfterFm } = parseFrontmatter(raw);
   const title = srcFm.title || '名称不明';
   const description = srcFm.description || extractDescription(bodyAfterFm);
-  const body = transformLinks(stripLeadingH1(bodyAfterFm), sourceDir, sourceSiteUrl);
+  const downloadUrl = await downloadUrlFor(sourceDir);
+  const body = transformLinks(stripLeadingH1(bodyAfterFm), sourceDir, sourceSiteUrl, downloadUrl);
 
   const sidebar = srcFm.sidebar || {};
   const sidebarOrder = sidebar.order ?? defaultSidebarOrder;

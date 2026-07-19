@@ -6,6 +6,7 @@ import starlight from '@astrojs/starlight';
 import rehypeExternalLinks from 'rehype-external-links';
 import remarkCallout from './src/plugins/remark-callout.mjs';
 import remarkQuestions from './src/plugins/remark-questions.mjs';
+import remarkDownload from './src/plugins/remark-download.mjs';
 
 const repoUrl = 'https://github.com/seekseep/cloudflare-introduction-handson';
 
@@ -33,6 +34,8 @@ function calloutIntegration() {
         config.markdown.processor?.options.remarkPlugins.push(remarkCallout);
         // `:::questions` の変換。名前衝突は無いので順序は問わない。
         config.markdown.processor?.options.remarkPlugins.push(remarkQuestions);
+        // `:::download` を大きなダウンロードボタンに変換。名前衝突なし。
+        config.markdown.processor?.options.remarkPlugins.push(remarkDownload);
       },
     },
   };
@@ -61,7 +64,7 @@ export default defineConfig({
     starlight({
       title: 'Cloudflare 公開・運用ハンズオン',
       description: 'Cloudflareの無料プランでアプリを公開・運用する流れと、公開時のセキュリティの要点を手を動かして学ぶ',
-      customCss: ['./src/styles/external-links.css', './src/styles/callouts.css', './src/styles/quiz.css'],
+      customCss: ['./src/styles/external-links.css', './src/styles/callouts.css', './src/styles/quiz.css', './src/styles/download.css'],
       head: [
         // ◯✕クイズの client スクリプトを全ページに注入する。
         { tag: 'script', content: quizClient },
