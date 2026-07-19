@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="360" viewBox="0 0 860 360" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="860" height="360" fill="#ffffff"/>
+<text x="430" y="44" text-anchor="middle" font-size="21" fill="#0f172a" font-weight="700">渡した 2 つの情報が wrangler.jsonc の 2 項目になる</text>
+<rect x="65.0" y="92.0" width="250" height="76" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="190" y="137" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">プロジェクト名（対話）</text>
+<rect x="65.0" y="212.0" width="250" height="76" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="190" y="257" text-anchor="middle" font-size="17" fill="#15803d" font-weight="600">公開フォルダ（引数）</text>
+<rect x="560" y="96" width="250" height="200" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="685" y="128" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">wrangler.jsonc</text>
+<polygon points="617.8,150.0 790.0,150.0 752.2,206.0 580.0,206.0" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="685" y="185" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">"name"</text>
+<polygon points="613.32,222.0 797.0,222.0 756.68,278.0 573.0,278.0" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="685" y="257" text-anchor="middle" font-size="15" fill="#15803d" font-weight="400">"pages_build_output_dir"</text>
+<line x1="316" y1="130" x2="578" y2="178" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="447.0" y="144.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
+<line x1="316" y1="250" x2="572" y2="250" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="444.0" y="240.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
+</svg>
