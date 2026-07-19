@@ -122,6 +122,24 @@ To access your new D1 Database in your Worker, add the following snippet to your
 
 テーブル定義は [schema.sql](./schema.sql) にあります。この SQL をデータベースに流すことで、投稿を保存するためのテーブルが作られます。
 
+`d1 execute` は、D1 データベースに SQL を実行するコマンドです。よく使うのは次の 4 パターンです。
+
+```bash
+# ローカル DB に schema.sql を流す（テーブル作成）
+npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
+
+# ローカル DB の中身を確認する
+npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
+
+# 本番 DB に schema.sql を流す（公開時）
+npx wrangler d1 execute hitokoto-db-02-d1 --remote --file=./schema.sql
+
+# 本番 DB の中身を確認する
+npx wrangler d1 execute hitokoto-db-02-d1 --remote --command "SELECT * FROM messages"
+```
+
+`--local` / `--remote` で「どの DB に」、`--file` / `--command` で「何を」流すかを指定します。オプションの詳細は [wrangler の公式リファレンス](https://developers.cloudflare.com/workers/wrangler/commands/#d1-execute) を参照してください。今回はローカル DB にテーブルを作りたいので、1 番目を実行します。
+
 ```bash
 npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
 ```
