@@ -7,73 +7,43 @@
  *       ZIP 内のルートフォルダは <lec>/（展開時に名前付きフォルダができる）。
  *
  * 中身の選定 (「余計なものを入れない」):
- *   - `git ls-files <dir>` で得た「git 管理下のファイル」だけを対象にする。
+ *   - git 管理下のファイル (libs/git.mjs) だけを対象にする。
  *     これにより node_modules/ .wrangler/ dist/ .dev.vars .env *.pem/*.key、
  *     各自コピー用の wrangler.jsonc など .gitignore 済みのものは自動で除外される。
  *     example (wrangler.example.jsonc / .dev.vars.example) や、追跡されている
  *     wrangler.jsonc (turnstile) は自然に含まれる。
  *   - そのうえで教材ファイル (LECTURE.md, images/) だけ明示的に除外する。
  *
- * ダウンロード URL の規約 (<sec>-<lec>.zip) は sync-lectures.mjs のリンク生成と一致させること。
+ * ダウンロード URL の規約 (<sec>-<lec>.zip) は libs/naming.mjs に集約し、
+ * sync-lectures.mjs のリンク生成と共有している。
  */
 
-import { execFile } from 'node:child_process';
 import { createWriteStream } from 'node:fs';
 import { mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
 
 import archiver from 'archiver';
 
-const execFileAsync = promisify(execFile);
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..', '..');
-const SITE_DIR = path.join(ROOT, 'site');
-const DOWNLOADS_DIR = path.join(SITE_DIR, 'public', 'downloads');
+import { lsFiles } from './libs/git.mjs';
+import { parseLectureRel, zipBasenameFor } from './libs/naming.mjs';
+import { DOWNLOADS_DIR, ROOT } from './libs/paths.mjs';
 
 // 教材ファイル。プロジェクト ZIP には含めない。
 function isLectureAsset(relToLecture) {
   return relToLecture === 'LECTURE.md' || relToLecture.startsWith('images/');
 }
 
-/**
- * sections/<sec>/<lec> から ZIP 名 (<sec>-<lec>.zip) と ZIP 内ルートフォルダ (<lec>) を導く。
- */
-function zipNamingFor(lectureRel) {
-  const [, sec, lec] = lectureRel.split('/');
-  return { zipBasename: `${sec}-${lec}.zip`, rootFolder: lec };
-}
-
 async function findProjectLectures() {
   // package.json を持つ sections/<sec>/<lec> を、git 管理下のファイルから拾う。
-  const { stdout } = await execFileAsync(
-    'git',
-    ['ls-files', '-z', '--', 'sections/*/*/package.json'],
-    { cwd: ROOT, maxBuffer: 10 * 1024 * 1024 },
-  );
-  const dirs = stdout
-    .split('\0')
-    .filter(Boolean)
-    .map((p) => path.posix.dirname(p.split(path.sep).join('/')));
+  const files = await lsFiles(ROOT, 'sections/*/*/package.json');
+  const dirs = files.map((p) => path.posix.dirname(p));
   return [...new Set(dirs)].sort();
 }
 
-async function trackedFilesUnder(lectureRel) {
-  const { stdout } = await execFileAsync(
-    'git',
-    ['ls-files', '-z', '--', lectureRel],
-    { cwd: ROOT, maxBuffer: 20 * 1024 * 1024 },
-  );
-  return stdout
-    .split('\0')
-    .filter(Boolean)
-    .map((p) => p.split(path.sep).join('/'));
-}
-
 function zipLecture(lectureRel, files) {
-  const { zipBasename, rootFolder } = zipNamingFor(lectureRel);
+  const { sec, lec } = parseLectureRel(lectureRel);
+  const zipBasename = zipBasenameFor(sec, lec);
+  const rootFolder = lec; // ZIP 展開時にできる名前付きフォルダ
   const outPath = path.join(DOWNLOADS_DIR, zipBasename);
 
   return new Promise((resolve, reject) => {
@@ -107,7 +77,7 @@ async function main() {
   }
 
   for (const lectureRel of lectures) {
-    const files = await trackedFilesUnder(lectureRel);
+    const files = await lsFiles(ROOT, lectureRel);
     const { zipBasename, count } = await zipLecture(lectureRel, files);
     const included = files.filter((f) => !isLectureAsset(path.posix.relative(lectureRel, f))).length;
     console.log(`[build-downloads] ${lectureRel} -> site/public/downloads/${zipBasename} (${included}/${count} files)`);

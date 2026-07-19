@@ -12,263 +12,44 @@
  *
  * frontmatter で title / sidebar.label / sidebar.order を上書きできる。
  * sidebar.order は LECTURE.md に限り、ディレクトリ名 (`01-...`) からデフォルト値を導出する。
- * 本文中の相対リンクは:
- *   - 同期対象のマークダウン → 対応するサイト URL (相対) に変換
- *   - sections/ 配下のソースコードや他リソース → GitHub blob URL に変換
- *   - 画像 (`![...](...)`) → GitHub raw URL に変換 (blob は HTML を返し <img> が壊れるため)
- *   - リポジトリルート直下のファイル (AGENTS.md など) → GitHub blob URL に変換
+ * 本文中の相対リンク・画像の書き換えは libs/links.mjs が担う。
  *
- * REPO（GitHub URL）と base は site/astro.config.mjs から読む。
+ * REPO（GitHub URL）と base は site/astro.config.mjs から読む (libs/astro-config.mjs)。
  */
 
 import { cp, glob, mkdir, readdir, readFile, writeFile, rm, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..', '..');
-const SITE_DIR = path.join(ROOT, 'site');
-const DOCS_DIR = path.join(SITE_DIR, 'src', 'content', 'docs');
-const PUBLIC_DIR = path.join(SITE_DIR, 'public');
+import { loadAstroConfig } from './libs/astro-config.mjs';
+import { parseFrontmatter } from './libs/frontmatter.mjs';
+import { PUBLIC_ASSETS, publicTargetFor, transformLinks } from './libs/links.mjs';
+import {
+  buildFrontmatter,
+  extractDescription,
+  parseLectureOrder,
+  stripLeadingH1,
+} from './libs/markdown.mjs';
+import { downloadUrlFor, parseLectureRel } from './libs/naming.mjs';
+import { DOCS_DIR, PUBLIC_DIR, ROOT } from './libs/paths.mjs';
+
 const MAX_FILE_BYTES = 200 * 1024;
 const PUBLISH_FLAG = 'docs';
 
-// Astro の画像最適化 (Sharp) でビルドが落ちるなど、src/content/docs/ 経由で
-// 載せられないアセットを site/public/ に置き、Markdown 内の参照を
-// 絶対 URL に書き換えるための whitelist。値はファイル名 (basename) で指定。
-// sections 配下の各レクチャー直下にある docs/ を走査し、basename が一致する
-// ファイルを site/public/<sec>/<lec>/docs/<file> にコピーする。
-const PUBLIC_ASSETS = new Set([
-  // 例: 'write-cookie.gif',  // アニメ GIF は Sharp の pixel 上限を超え落ちることがある
-]);
-
-let ASTRO_BASE = '';
-let REPO = '';
-async function loadAstroConfig() {
-  const cfg = await readFile(path.join(SITE_DIR, 'astro.config.mjs'), 'utf8');
-  const base = cfg.match(/^\s*base:\s*['"]([^'"]+)['"]/m);
-  ASTRO_BASE = base ? base[1].replace(/\/+$/, '') : '';
-  const repo = cfg.match(/repoUrl\s*=\s*['"]([^'"]+)['"]/);
-  REPO = repo ? repo[1].replace(/\/+$/, '') : '';
-}
-
-/**
- * PUBLIC_ASSETS 対象のソースパスから、サイト URL と public/ 配下の出力先を導く。
- * `sections/<sec>/<lec>/docs/<file>` → `{ url: '<base>/<sec>/<lec>/docs/<file>', destRel: '<sec>/<lec>/docs/<file>' }`
- */
-function publicTargetFor(resolved) {
-  const m = resolved.match(/^sections\/([\w-]+\/[\w-]+\/docs\/.+)$/);
-  if (!m) return null;
-  return { url: `${ASTRO_BASE}/${m[1]}`, destRel: m[1] };
-}
-
-function parseScalar(val) {
-  if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-    return val.slice(1, -1);
-  }
-  if (val === 'true') return true;
-  if (val === 'false') return false;
-  if (val === 'null' || val === '~') return null;
-  if (/^-?\d+$/.test(val)) return Number(val);
-  return val;
-}
-
-/**
- * 簡易 YAML フロントマターパーサー。
- * フラットなキーと、1 段ネストしたブロック (例: `sidebar: { order, label }`) のみを扱う。
- */
-function parseFrontmatter(content) {
-  const m = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
-  if (!m) return { data: {}, body: content };
-  const data = {};
-  let currentParent = null;
-  for (const line of m[1].split(/\r?\n/)) {
-    if (line.trim() === '') { currentParent = null; continue; }
-    const nested = line.match(/^[ \t]+([\w-]+):\s*(.*)$/);
-    if (nested && currentParent) {
-      data[currentParent][nested[1]] = parseScalar(nested[2].trim());
-      continue;
-    }
-    const top = line.match(/^([\w-]+):\s*(.*)$/);
-    if (!top) { currentParent = null; continue; }
-    const val = top[2].trim();
-    if (val === '') {
-      data[top[1]] = {};
-      currentParent = top[1];
-    } else {
-      data[top[1]] = parseScalar(val);
-      currentParent = null;
-    }
-  }
-  return { data, body: content.slice(m[0].length) };
-}
-
-function extractDescription(content) {
-  const lines = content.split('\n');
-  let foundH1 = false;
-  const buffer = [];
-  for (const line of lines) {
-    if (!foundH1) {
-      if (/^#[ \t]/.test(line)) foundH1 = true;
-      continue;
-    }
-    if (line.trim() === '') {
-      if (buffer.length > 0) break;
-      continue;
-    }
-    if (/^#/.test(line)) break;
-    buffer.push(line.trim());
-    if (buffer.join(' ').length > 160) break;
-  }
-  const text = buffer.join(' ').replace(/\s+/g, ' ').trim();
-  return text ? text.slice(0, 160) : undefined;
-}
-
-function stripLeadingH1(content) {
-  return content.replace(/^\s*#[ \t]+.+?(?:\r?\n)+/, '');
-}
-
-function parseLectureOrder(lecture) {
-  const m = lecture.match(/^(\d+)-/);
-  return m ? Number(m[1]) : 99;
-}
-
-function relativeUrl(fromUrl, toUrl, hash = '') {
-  const fromSegs = fromUrl.replace(/^\/|\/$/g, '').split('/').filter(Boolean);
-  const toSegs = toUrl.replace(/^\/|\/$/g, '').split('/').filter(Boolean);
-  let i = 0;
-  while (i < fromSegs.length && i < toSegs.length && fromSegs[i] === toSegs[i]) i++;
-  const ups = fromSegs.length - i;
-  const downs = toSegs.slice(i);
-  let rel;
-  if (ups === 0 && downs.length === 0) {
-    rel = './';
-  } else if (ups === 0) {
-    rel = './' + downs.join('/') + '/';
-  } else {
-    rel = '../'.repeat(ups) + (downs.length > 0 ? downs.join('/') + '/' : '');
-  }
-  return rel + hash;
-}
-
-/**
- * 既知のサイト内ターゲットへのマッピング。
- * resolved (リポジトリルートからの POSIX 相対) を、サイト URL に変換する。
- * 一致しなければ null を返す。
- */
-function resolveSiteUrl(resolved, isDirLink) {
-  if (resolved === 'sections/README.md') return '/getting-started/';
-
-  let m = resolved.match(/^sections\/([\w-]+)\.md$/);
-  if (m && m[1] !== 'README') return `/${m[1].toLowerCase()}/`;
-
-  m = resolved.match(/^sections\/([\w-]+)\/README\.md$/);
-  if (m) return `/${m[1]}/`;
-
-  m = resolved.match(/^sections\/([\w-]+)\/([\w-]+)\/LECTURE\.md$/i);
-  if (m) return `/${m[1]}/${m[2]}/`;
-
-  m = resolved.match(/^sections\/([\w-]+)\/([\w-]+)\/README\.md$/i);
-  if (m) return `/${m[1]}/${m[2]}/readme/`;
-
-  if (isDirLink) {
-    m = resolved.match(/^sections\/([\w-]+)\/([\w-]+)$/);
-    if (m) return `/${m[1]}/${m[2]}/`;
-    m = resolved.match(/^sections\/([\w-]+)$/);
-    if (m) return `/${m[1]}/`;
-  }
-  return null;
-}
-
-function transformLinks(content, sourceDir, sourceSiteUrl, downloadUrl = null) {
-  // 画像 (`![alt](...)`) はソースコードのように blob URL へ飛ばすと、blob は画像
-  // 本体ではなく HTML ページを返すため <img> がリンク切れになる。画像だけは
-  // 画像バイト列をそのまま返す raw.githubusercontent.com に向ける。
-  const RAW = REPO.replace('github.com', 'raw.githubusercontent.com');
-  const githubAsset = (isImage, resolved, hash, titlePart) =>
-    isImage
-      ? `${RAW}/main/${resolved}${hash}${titlePart}`
-      : `${REPO}/blob/main/${resolved}${hash}${titlePart}`;
-
-  return content.replace(/(!?)(\[[^\]]*\])\(([^)\s]+)(\s+"[^"]*")?\)/g, (match, bang, label, rawTarget, title) => {
-    const target = rawTarget.trim();
-    const titlePart = title || '';
-    const isImage = bang === '!';
-    const prefix = `${bang}${label}`;
-
-    if (/^(https?:|mailto:|tel:|#)/i.test(target)) return match;
-    if (target.startsWith('/')) return match;
-
-    const [pathPart, hashPart = ''] = target.split('#', 2);
-    const hash = hashPart ? `#${hashPart}` : '';
-    const isDirLink = pathPart.endsWith('/');
-    const resolved = path.posix.normalize(path.posix.join(sourceDir, pathPart)).replace(/\/$/, '');
-
-    // 本文中の手書きセンチネル `./project.zip` を、生成した配布 ZIP の URL に差し替える。
-    if (downloadUrl && path.posix.basename(resolved) === 'project.zip') {
-      return `${prefix}(${downloadUrl}${hash}${titlePart})`;
-    }
-
-    if (PUBLIC_ASSETS.has(path.posix.basename(resolved))) {
-      const t = publicTargetFor(resolved);
-      if (t) return `${prefix}(${t.url}${hash}${titlePart})`;
-    }
-
-    if (!target.startsWith('./') && !target.startsWith('../')) return match;
-    if (resolved.startsWith('..') || resolved === '..') return match;
-
-    const toUrl = resolveSiteUrl(resolved, isDirLink);
-    if (toUrl) {
-      return `${prefix}(${relativeUrl(sourceSiteUrl, toUrl, hash)}${titlePart})`;
-    }
-
-    if (resolved.startsWith('sections/')) {
-      return `${prefix}(${githubAsset(isImage, resolved, hash, titlePart)})`;
-    }
-
-    if (!resolved.includes('/') && resolved.length > 0) {
-      return `${prefix}(${githubAsset(isImage, resolved, hash, titlePart)})`;
-    }
-
-    return match;
-  });
-}
-
-function yamlEscape(s) {
-  if (s === undefined || s === null) return '""';
-  return `"${String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
-}
-
-function buildFrontmatter({ title, description, sidebarOrder, sidebarLabel, editUrl }) {
-  const lines = ['---'];
-  lines.push(`title: ${yamlEscape(title)}`);
-  if (description) lines.push(`description: ${yamlEscape(description)}`);
-  if (sidebarOrder !== undefined || sidebarLabel) {
-    lines.push('sidebar:');
-    if (sidebarOrder !== undefined) lines.push(`  order: ${sidebarOrder}`);
-    if (sidebarLabel) lines.push(`  label: ${yamlEscape(sidebarLabel)}`);
-  }
-  if (editUrl) lines.push(`editUrl: ${yamlEscape(editUrl)}`);
-  lines.push('---', '', '');
-  return lines.join('\n');
-}
-
 /**
  * レクチャーの source dir がプロジェクト (package.json あり) なら、配布 ZIP の URL を返す。
- * build-downloads.mjs と同じ命名規約 (<sec>-<lec>.zip)。対象でなければ null。
+ * naming.mjs の命名規約 (<sec>-<lec>.zip) を build-downloads.mjs と共有する。対象でなければ null。
  * 本文中に手書きした `./project.zip` リンクを transformLinks でこの URL に差し替えるために使う。
  */
-async function downloadUrlFor(sourceDir) {
-  const m = sourceDir.match(/^sections\/([\w-]+)\/([\w-]+)$/);
-  if (!m) return null;
+async function resolveDownloadUrl(sourceDir, base) {
+  const parsed = parseLectureRel(sourceDir);
+  if (!parsed) return null;
   try {
     await stat(path.join(ROOT, sourceDir, 'package.json'));
   } catch (e) {
     if (e.code === 'ENOENT') return null;
     throw e;
   }
-  const [, sec, lec] = m;
-  return `${ASTRO_BASE}/downloads/${sec}-${lec}.zip`;
+  return downloadUrlFor(base, parsed.sec, parsed.lec);
 }
 
 async function syncFile({
@@ -278,6 +59,7 @@ async function syncFile({
   outputFile,
   defaultSidebarOrder,
   editPath,
+  config,
 }) {
   const stats = await stat(sourceFile);
   if (stats.size > MAX_FILE_BYTES) {
@@ -289,8 +71,14 @@ async function syncFile({
   const { data: srcFm, body: bodyAfterFm } = parseFrontmatter(raw);
   const title = srcFm.title || '名称不明';
   const description = srcFm.description || extractDescription(bodyAfterFm);
-  const downloadUrl = await downloadUrlFor(sourceDir);
-  const body = transformLinks(stripLeadingH1(bodyAfterFm), sourceDir, sourceSiteUrl, downloadUrl);
+  const downloadUrl = await resolveDownloadUrl(sourceDir, config.base);
+  const body = transformLinks(stripLeadingH1(bodyAfterFm), {
+    sourceDir,
+    sourceSiteUrl,
+    repo: config.repo,
+    base: config.base,
+    downloadUrl,
+  });
 
   const sidebar = srcFm.sidebar || {};
   const sidebarOrder = sidebar.order ?? defaultSidebarOrder;
@@ -301,7 +89,7 @@ async function syncFile({
     description,
     sidebarOrder,
     sidebarLabel,
-    editUrl: editPath && REPO ? `${REPO}/edit/main/${editPath}` : undefined,
+    editUrl: editPath && config.repo ? `${config.repo}/edit/main/${editPath}` : undefined,
   });
 
   await mkdir(path.dirname(outputFile), { recursive: true });
@@ -326,7 +114,7 @@ async function syncSiblingDocsDir(sourceDir, outputFile) {
   console.log(`[sync-lectures] ${path.relative(ROOT, sourceDocsDir)}/ -> ${path.relative(ROOT, outputDocsDir)}/`);
 }
 
-async function copyPublicAssets() {
+async function copyPublicAssets(base) {
   const it = glob('sections/*/*/docs/**', { cwd: ROOT });
   for await (const rel of it) {
     const relPosix = rel.split(path.sep).join('/');
@@ -334,7 +122,7 @@ async function copyPublicAssets() {
     const abs = path.join(ROOT, relPosix);
     const stats = await stat(abs);
     if (!stats.isFile()) continue;
-    const t = publicTargetFor(relPosix);
+    const t = publicTargetFor(relPosix, base);
     if (!t) {
       console.warn(`[sync-lectures] PUBLIC_ASSETS basename matched but path shape unsupported: ${relPosix}`);
       continue;
@@ -415,10 +203,10 @@ async function findPublishableMarkdown() {
 }
 
 async function main() {
-  await loadAstroConfig();
+  const config = await loadAstroConfig();
   await cleanDocsDir();
   await mkdir(DOCS_DIR, { recursive: true });
-  await copyPublicAssets();
+  await copyPublicAssets(config.base);
 
   for (const srcRel of await findPublishableMarkdown()) {
     const dest = deriveDestination(srcRel);
@@ -435,6 +223,7 @@ async function main() {
       outputFile,
       defaultSidebarOrder: dest.defaultSidebarOrder,
       editPath: srcRel,
+      config,
     });
     await syncSiblingDocsDir(sourceDir, outputFile);
   }
