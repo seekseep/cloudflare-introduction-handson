@@ -79,7 +79,7 @@ Workers は、リクエストを受けてプログラムを実行する **サー
 次に、このフォルダで依存をインストールし、Worker を起動します。
 
 ```bash
-npm install
+npm ci
 npx wrangler dev
 ```
 

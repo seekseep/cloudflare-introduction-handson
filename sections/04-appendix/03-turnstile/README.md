@@ -18,7 +18,7 @@ wrangler.jsonc Worker + assets（静的配信）の設定
 ## 起動方法
 
 ```bash
-npm install
+npm ci
 cp .dev.vars.example .dev.vars   # ローカル用シークレット（テスト用 secret）
 npm run dev                      # = wrangler dev
 ```

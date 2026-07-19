@@ -58,7 +58,7 @@ docs: true
 次に、このフォルダで依存をインストールし、データベースを作ります。
 
 ```bash
-npm install
+npm ci
 npx wrangler d1 create hitokoto-db-02-d1
 ```
 

@@ -9,9 +9,9 @@
     "front": "wrangler pages dev ./public --port 8788"
   },
   "dependencies": {
-    "hono": "^4.7.0"
+    "hono": "^4.12.31"
   },
   "devDependencies": {
-    "wrangler": "^4.40.0"
+    "wrangler": "^4.112.0"
   }
 }

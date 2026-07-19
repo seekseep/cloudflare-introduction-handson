@@ -25,7 +25,7 @@ API（Worker）とフロントは別々に起動します。**ターミナルを
 開いて `name` を自分用に書き換えてください（例: `hitokoto-tanaka-01-workers`）。
 
 ```bash
-npm install
+npm ci
 ```
 
 ### ターミナル1: API（Worker）

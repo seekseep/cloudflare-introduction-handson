@@ -51,7 +51,7 @@ docs: true
 ### TODO 1: 起動して送信する
 
 ```bash
-npm install
+npm ci
 cp .dev.vars.example .dev.vars
 npm run dev
 ```

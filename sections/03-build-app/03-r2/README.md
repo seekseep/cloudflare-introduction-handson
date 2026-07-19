@@ -22,7 +22,7 @@ package.json              npm scripts（dev / deploy / db:* / bucket:create）
 開いて `name` を自分用に書き換えてください（例: `hitokoto-tanaka-03-r2`）。
 
 ```bash
-npm install
+npm ci
 ```
 
 ### D1 と R2 を作る

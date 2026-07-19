@@ -23,7 +23,7 @@ package.json   依存（wrangler）
 ### 準備
 
 ```bash
-npm install
+npm ci
 ```
 
 ### ローカルで確認

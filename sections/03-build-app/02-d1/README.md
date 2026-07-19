@@ -22,7 +22,7 @@ package.json           npm scripts（dev / deploy / db:*）
 開いて `name` を自分用に書き換えてください（例: `hitokoto-tanaka-02-d1`）。
 
 ```bash
-npm install
+npm ci
 ```
 
 ### D1 データベースを作る

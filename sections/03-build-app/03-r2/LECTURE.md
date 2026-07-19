@@ -66,7 +66,7 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 次に、このフォルダで依存をインストールし、この章で使う D1 と R2 バケットを用意します。
 
 ```bash
-npm install
+npm ci
 npx wrangler d1 create hitokoto-db-03-r2
 npx wrangler r2 bucket create hitokoto-images-03-r2
 ```
