@@ -6,14 +6,14 @@
 <text x="190" y="137" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">プロジェクト名（対話）</text>
 <rect x="65.0" y="212.0" width="250" height="76" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
 <text x="190" y="257" text-anchor="middle" font-size="17" fill="#15803d" font-weight="600">公開フォルダ（引数）</text>
-<rect x="560" y="96" width="250" height="200" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
-<text x="685" y="128" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">wrangler.jsonc</text>
-<polygon points="617.8,150.0 790.0,150.0 752.2,206.0 580.0,206.0" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
-<text x="685" y="185" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">"name"</text>
-<polygon points="613.32,222.0 797.0,222.0 756.68,278.0 573.0,278.0" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
-<text x="685" y="257" text-anchor="middle" font-size="15" fill="#15803d" font-weight="400">"pages_build_output_dir"</text>
-<line x1="316" y1="130" x2="578" y2="178" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
-<text x="447.0" y="144.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
-<line x1="316" y1="250" x2="572" y2="250" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
-<text x="444.0" y="240.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
+<rect x="548" y="92" width="296" height="212" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="696" y="126" text-anchor="middle" font-size="17" fill="#475569" font-weight="600">wrangler.jsonc</text>
+<polygon points="620.48,151.0 814.0,151.0 771.52,209.0 578.0,209.0" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="696" y="187" text-anchor="middle" font-size="17" fill="#1d4ed8" font-weight="600">"name"</text>
+<polygon points="608.96,227.0 832.0,227.0 783.04,285.0 560.0,285.0" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="696" y="263" text-anchor="middle" font-size="13" fill="#15803d" font-weight="400">"pages_build_output_dir"</text>
+<line x1="316" y1="130" x2="566" y2="180" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="441.0" y="145.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
+<line x1="316" y1="250" x2="556" y2="256" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="436.0" y="243.0" text-anchor="middle" font-size="17" fill="#0f172a" font-weight="600">そのまま</text>
 </svg>

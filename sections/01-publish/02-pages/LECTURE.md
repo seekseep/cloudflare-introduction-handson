@@ -201,6 +201,7 @@ QRコードの生成やBMIの計算、テトリスのようなゲームなどの
 
 `name` は **対話で答えたプロジェクト名**、`pages_build_output_dir` は **引数で渡した公開フォルダ** が、そのまま入っています。
 
+<!-- genfig: 左「プロジェクト名（対話）」「公開フォルダ（引数）」→ 右 wrangler.jsonc の "name" / "pages_build_output_dir"（平行四辺形）へ LINK で対応づける。ラベル「そのまま」。build: genfig/scratch_02_args_to_config.py -->
 ![対話で答えたプロジェクト名と引数で渡した公開フォルダが、そのまま wrangler.jsonc の2項目に対応する](./images/02-args-to-config.svg)
 
 設定ファイルがあれば、次回からは **引数も対話もなしで** コマンド一発で公開できます。
