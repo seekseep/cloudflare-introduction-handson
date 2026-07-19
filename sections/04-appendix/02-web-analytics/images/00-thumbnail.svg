@@ -5,7 +5,6 @@
 <rect x="60" y="60" width="340" height="44" rx="16" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
 <text x="78" y="88" text-anchor="start" font-size="17" fill="#6d28d9" font-weight="600">SECTION 04 ・ 付録</text>
 <text x="64" y="190" text-anchor="start" font-size="33" fill="#0f172a" font-weight="700">Web Analytics でアクセス解析</text>
-<text x="66" y="286" text-anchor="start" font-size="21" fill="#6d28d9" font-weight="700">04-02</text>
 <ellipse cx="800" cy="170" rx="92" ry="92" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
 <svg x="740" y="110" width="120" height="120" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M31 2H5C3.343 2 2 3.343 2 5v26c0 1.657 1.343 3 3 3h26c1.657 0 3-1.343 3-3V5c0-1.657-1.343-3-3-3z"/><path fill="#E1E8ED" d="M31 1H5C2.791 1 1 2.791 1 5v26c0 2.209 1.791 4 4 4h26c2.209 0 4-1.791 4-4V5c0-2.209-1.791-4-4-4zm0 2c1.103 0 2 .897 2 2v4h-6V3h4zm-4 16h6v6h-6v-6zm0-2v-6h6v6h-6zM25 3v6h-6V3h6zm-6 8h6v6h-6v-6zm0 8h6v6h-6v-6zM17 3v6h-6V3h6zm-6 8h6v6h-6v-6zm0 8h6v6h-6v-6zM3 5c0-1.103.897-2 2-2h4v6H3V5zm0 6h6v6H3v-6zm0 8h6v6H3v-6zm2 14c-1.103 0-2-.897-2-2v-4h6v6H5zm6 0v-6h6v6h-6zm8 0v-6h6v6h-6zm12 0h-4v-6h6v4c0 1.103-.897 2-2 2z"/><path fill="#5C913B" d="M13 33H7V16c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v17z"/><path fill="#3B94D9" d="M29 33h-6V9c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v24z"/><path fill="#DD2E44" d="M21 33h-6V23c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v10z"/></svg>
 </svg>

@@ -5,7 +5,6 @@
 <rect x="60" y="60" width="340" height="44" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
 <text x="78" y="88" text-anchor="start" font-size="17" fill="#1d4ed8" font-weight="600">SECTION 03 ・ アプリを作る</text>
 <text x="64" y="190" text-anchor="start" font-size="33" fill="#0f172a" font-weight="700">Workers で API を動かす</text>
-<text x="66" y="286" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">03-01</text>
 <ellipse cx="800" cy="170" rx="92" ry="92" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
 <svg x="740" y="110" width="120" height="120" viewBox="0 0 36 36"><path fill="#FFAC33" d="M32.938 15.651C32.792 15.26 32.418 15 32 15H19.925L26.89 1.458c.219-.426.106-.947-.271-1.243C26.437.071 26.218 0 26 0c-.233 0-.466.082-.653.243L18 6.588 3.347 19.243c-.316.273-.43.714-.284 1.105S3.582 21 4 21h12.075L9.11 34.542c-.219.426-.106.947.271 1.243.182.144.401.215.619.215.233 0 .466-.082.653-.243L18 29.412l14.653-12.655c.317-.273.43-.714.285-1.106z"/></svg>
 </svg>

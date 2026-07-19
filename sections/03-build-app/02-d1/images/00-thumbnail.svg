@@ -5,7 +5,6 @@
 <rect x="60" y="60" width="340" height="44" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
 <text x="78" y="88" text-anchor="start" font-size="17" fill="#1d4ed8" font-weight="600">SECTION 03 ・ アプリを作る</text>
 <text x="64" y="190" text-anchor="start" font-size="33" fill="#0f172a" font-weight="700">D1 でデータを保存する</text>
-<text x="66" y="286" text-anchor="start" font-size="21" fill="#1d4ed8" font-weight="700">03-02</text>
 <ellipse cx="800" cy="170" rx="92" ry="92" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
 <svg x="740" y="110" width="120" height="120" viewBox="0 0 36 36"><path fill="#292F33" d="M30 34c0 1.104-.896 2-2 2H8c-1.104 0-2-.896-2-2V2c0-1.104.896-2 2-2h20c1.104 0 2 .896 2 2v32z"/><path fill="#66757F" d="M28 16c0 .552-.447 1-1 1H9c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h18c.553 0 1 .448 1 1v13zm0 17c0 .553-.447 1-1 1H9c-.552 0-1-.447-1-1V20c0-.553.448-1 1-1h18c.553 0 1 .447 1 1v13z"/><path fill="#292F33" d="M22 8c0 .552-.447 1-1 1h-6c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h6c.553 0 1 .448 1 1v3zm0 17c0 .553-.447 1-1 1h-6c-.552 0-1-.447-1-1v-3c0-.553.448-1 1-1h6c.553 0 1 .447 1 1v3z"/><path fill="#E1E8ED" d="M15 5h6v3h-6zm0 17h6v3h-6zm9-8.97c0 .536-.435.97-.97.97H12.97c-.536 0-.97-.435-.97-.97v-.06c0-.536.434-.97.97-.97h10.06c.535 0 .97.435.97.97v.06zm0 16.999c0 .536-.435.971-.97.971H12.97c-.536 0-.97-.435-.97-.971v-.059c0-.535.434-.97.97-.97h10.06c.535 0 .97.435.97.971v.058z"/></svg>
 </svg>
