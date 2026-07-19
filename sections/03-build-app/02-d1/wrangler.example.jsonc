@@ -1,22 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // このファイルはテンプレート（見本）です。直接は使いません。
-  // まず、このファイルを同じフォルダ上で複製し、複製した方の名前を wrangler.jsonc に変更してから、
-  // その name と database_id を書き換えてください。
-  // wrangler.jsonc は .gitignore 済みなので、あなたの名前入りの設定はコミットされません。
-  //
-  // 他の人とぶつからないよう「あなたの名前」の部分を自分用に書き換えてください（例: hitokoto-tanaka-02-d1）。
   "name": "hitokoto-あなたの名前-02-d1",
   "main": "src/index.js",
   "compatibility_date": "2026-06-01",
   "observability": { "enabled": true },
-  // D1（SQLite データベース）の binding。
-  // database_id は `npx wrangler d1 create hitokoto-db-02-d1` で作ったときに表示される ID を貼る。
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "hitokoto-db-02-d1",
-      "database_id": "ここに wrangler d1 create の出力IDを貼る"
+      "database_name": "hitokoto-db-02-d1"
     }
   ]
 }

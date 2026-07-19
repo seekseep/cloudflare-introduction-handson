@@ -18,10 +18,10 @@ docs: true
 
 ## TODO
 
-1. D1 データベースを作り、`wrangler.jsonc` に binding を設定する
-2. `schema.sql` を流してテーブルを作る
-3. ローカルで投稿が保存されることを確認する
-4. 本番に公開して、インターネット越しに保存できることを確認する
+1. プロジェクト設定（`wrangler.jsonc`）を用意する
+2. ローカルの DB に `schema.sql` を流してテーブルを作る
+3. ローカルで投稿が保存されることを確認する（ここまでリモートのリソース作成は不要）
+4. 本番の D1 を作って公開し、インターネット越しに保存できることを確認する
 5. 不要になったリソース（Worker / D1）を削除する
 
 ## 学ぶこと
@@ -29,6 +29,7 @@ docs: true
 - データベースの役割（処理が終わってもデータが残る）
 - D1 の基本：`prepare(...).bind(...).all()/run()` で SQL を実行する
 - テーブルは `schema.sql` を流して作る（ローカルで開発し、公開時に本番にも同じ SQL を流す）
+- **まずローカルだけで完成させ、公開のときに本番リソースを用意する**流れ（ローカルは miniflare で動くので D1 の作成は不要）
 
 ## 説明
 
@@ -45,7 +46,7 @@ docs: true
 [サンプルコードをダウンロード](./project.zip)
 :::
 
-### TODO 1: D1 を作る
+### TODO 1: プロジェクト設定を用意する
 
 まず、このセクション用の設定ファイル `wrangler.jsonc` を用意します。
 
@@ -53,17 +54,82 @@ docs: true
 
 複製した [wrangler.jsonc](./wrangler.jsonc) を開き、`name` の「あなたの名前」を自分用に書き換えます（例: `hitokoto-tanaka-02-d1`）。他の人とぶつからないよう、必ず自分だけの名前にしてください。
 
-次に、このフォルダで依存をインストールし、データベースを作ります。
+```jsonc
+"d1_databases": [
+  {
+    "binding": "DB",
+    "database_name": "hitokoto-db-02-d1"
+  }
+]
+```
+
+`binding` の `"DB"` が、Worker のコードで `c.env.DB` として使う名前です。
+
+:::notice
+**ローカルで動かすだけなら、ここで `wrangler d1 create` は実行しません。** `wrangler dev` は手元の SQLite（miniflare）を使うので、本番の D1 を作らなくても最後まで動きます。本番の D1 を作って `database_id` を書き足すのは、TODO 4（本番に公開する）のときだけです。
+:::
+
+次に、このフォルダで依存をインストールします。
 
 ```bash
 npm ci
+```
+
+### TODO 2: ローカルの DB にテーブルを作る
+
+テーブル定義は [schema.sql](./schema.sql) にあります。この SQL をデータベースに流すことで、投稿を保存するためのテーブルが作られます。
+
+`d1 execute` は、D1 データベースに SQL を実行するコマンドです。`--local` を付けると **手元の開発用 D1（`wrangler dev` が使う SQLite）** に対して実行します。
+
+```bash
+# ローカル DB に schema.sql を流す（テーブル作成）
+npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
+
+# ローカル DB の中身を確認する
+npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
+```
+
+`--local` / `--remote` で「どの DB に」、`--file` / `--command` で「何を」流すかを指定します。オプションの詳細は [wrangler の公式リファレンス](https://developers.cloudflare.com/workers/wrangler/commands/#d1-execute) を参照してください。今回はローカル DB にテーブルを作りたいので、1 番目を実行します。
+
+```bash
+npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
+```
+
+`--local` は手元の開発用 D1 にだけ流します。本番側へは TODO 4 の公開のときに `--remote` で同じ SQL をもう一度流すので、今はローカルだけで大丈夫です。
+
+### TODO 3: ローカルで保存を確認する
+
+ターミナルを 2 つ使います。
+
+:::notice
+2 つ目のターミナルも、VSCode でこのフォルダを開いていればこのフォルダの中から始まります。それぞれのターミナルで `pwd`（Windows は `cd`）を実行し、末尾が `.../02-d1` になっていることを確認しておきましょう。
+:::
+
+```bash
+npx wrangler dev
+npx wrangler pages dev ./public --port 8788
+```
+
+`http://localhost:8788` を開いて投稿し、**ページを再読み込みしても残っている** ことを確認します。
+保存されたデータは次のコマンドでも確認できます。
+
+```bash
+npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
+```
+
+:::notice
+ここまでで、**本番の D1 を一切作らずに**「ひとことボード」がローカルで完成しました。公開しないならこの TODO 3 までで大丈夫です。インターネットに公開したい場合だけ、次の TODO 4 に進みます。
+:::
+
+### TODO 4: 本番に公開する
+
+ここで初めて **本番の D1** を用意します。まず本番のデータベースを作ります。
+
+```bash
 npx wrangler d1 create hitokoto-db-02-d1
 ```
 
 ```bash
-% npm ci
-
-（依存パッケージがインストールされます）
 % npx wrangler d1 create hitokoto-db-02-d1
 
  ⛅️ wrangler x.x.x
@@ -95,16 +161,9 @@ To access your new D1 Database in your Worker, add the following snippet to your
 - **For local dev, do you want to connect to the remote resource instead of a local resource?**
   「ローカル開発（`wrangler dev`）のとき、手元の DB ではなく本番の D1 につなぐ？」。yes にすると `"remote": true` が付きます。
 
-この教材では、**1つ目を No** にして、`wrangler.jsonc` は次の手順で自分で書き換えるのをおすすめします（確実で分かりやすいため）。
+この教材では、**1つ目を No** にして、`wrangler.jsonc` は自分で書き換えるのをおすすめします（確実で分かりやすいため）。
 
-> [!IMPORTANT]
-> Wrangler に任せる（1つ目を Yes にする）場合は、次の2点を必ず守ってください。
-> - binding 名は **`DB`**（デフォルトのままにしない。コードが `c.env.DB` を参照しているため）
-> - 「connect to the remote resource…」は **No**（ローカル開発は手元の DB を使う。`"remote": true` を付けない）
->
-> ここを間違える（binding が `DB` 以外・remote が Yes）と、`Cannot read properties of undefined (reading 'prepare')` エラーになります。
-
-実行すると `database_id` が表示されます。これを [wrangler.jsonc](./wrangler.jsonc) の `database_id` に貼り付けます。
+実行すると `database_id` が表示されます。これを [wrangler.jsonc](./wrangler.jsonc) の `d1_databases` に **`database_id` 行として書き足します**（TODO 1 の時点では無かった行を追記します）。
 
 ```jsonc
 "d1_databases": [
@@ -116,58 +175,12 @@ To access your new D1 Database in your Worker, add the following snippet to your
 ]
 ```
 
-`binding` の `"DB"` が、Worker のコードで `c.env.DB` として使う名前です。
-
-### TODO 2: テーブルを作る
-
-テーブル定義は [schema.sql](./schema.sql) にあります。この SQL をデータベースに流すことで、投稿を保存するためのテーブルが作られます。
-
-`d1 execute` は、D1 データベースに SQL を実行するコマンドです。よく使うのは次の 4 パターンです。
-
-```bash
-# ローカル DB に schema.sql を流す（テーブル作成）
-npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
-
-# ローカル DB の中身を確認する
-npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
-
-# 本番 DB に schema.sql を流す（公開時）
-npx wrangler d1 execute hitokoto-db-02-d1 --remote --file=./schema.sql
-
-# 本番 DB の中身を確認する
-npx wrangler d1 execute hitokoto-db-02-d1 --remote --command "SELECT * FROM messages"
-```
-
-`--local` / `--remote` で「どの DB に」、`--file` / `--command` で「何を」流すかを指定します。オプションの詳細は [wrangler の公式リファレンス](https://developers.cloudflare.com/workers/wrangler/commands/#d1-execute) を参照してください。今回はローカル DB にテーブルを作りたいので、1 番目を実行します。
-
-```bash
-npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
-```
-
-`--local` は手元の開発用 D1（`wrangler dev` が使う SQLite）にだけ流します。本番側へは TODO 4 の
-公開のときに同じ SQL をもう一度流すので、今はローカルだけで大丈夫です。
-
-### TODO 3: ローカルで保存を確認する
-
-ターミナルを 2 つ使います。
-
-:::notice
-2 つ目のターミナルも、VSCode でこのフォルダを開いていればこのフォルダの中から始まります。それぞれのターミナルで `pwd`（Windows は `cd`）を実行し、末尾が `.../02-d1` になっていることを確認しておきましょう。
-:::
-
-```bash
-npx wrangler dev
-npx wrangler pages dev ./public --port 8788
-```
-
-`http://localhost:8788` を開いて投稿し、**ページを再読み込みしても残っている** ことを確認します。
-保存されたデータは次のコマンドでも確認できます。
-
-```bash
-npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
-```
-
-### TODO 4: 本番に公開する
+> [!IMPORTANT]
+> Wrangler に任せる（1つ目を Yes にする）場合は、次の2点を必ず守ってください。
+> - binding 名は **`DB`**（デフォルトのままにしない。コードが `c.env.DB` を参照しているため）
+> - 「connect to the remote resource…」は **No**（ローカル開発は手元の DB を使う。`"remote": true` を付けない）
+>
+> ここを間違える（binding が `DB` 以外・remote が Yes）と、`Cannot read properties of undefined (reading 'prepare')` エラーになります。
 
 本番の D1 はローカルとは別のデータベースなので、公開前に同じ `schema.sql` を本番側にも流しておきます（`--local` を `--remote` に変えます）。
 

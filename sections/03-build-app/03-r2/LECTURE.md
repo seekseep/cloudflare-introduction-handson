@@ -23,11 +23,11 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 
 ## TODO
 
-1. R2 バケットを作り、`wrangler.jsonc` に binding を設定する
-2. テーブルに画像のキーを持たせる（`image_key` 列）
+1. プロジェクト設定（`wrangler.jsonc`）を用意する
+2. ローカルの DB にテーブルの画像キー列（`image_key`）を用意する
 3. Worker が D1 と R2 をどう使い分けているかコードを読む
-4. ローカルで画像つきの投稿が保存・表示されることを確認する
-5. 本番に公開して、インターネット越しに画像を配信できることを確認する
+4. ローカルで画像つきの投稿が保存・表示されることを確認する（ここまでリモートのリソース作成は不要）
+5. 本番の D1 / R2 を作って公開し、インターネット越しに画像を配信できることを確認する
 6. 使ったリソース（Worker / D1 / R2）をすべて削除する
 
 ## 学ぶこと
@@ -37,6 +37,7 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 - 画像本体は R2 に置き、D1 には **キーだけ** を保存する設計
 - アップロードのキーは **一意にする**（ファイル名そのままは上書き・衝突の元）
 - 受け取るファイルの **種類・サイズを制限** する（踏み台対策の基本）
+- **まずローカルだけで完成させ、公開のときに本番リソース（D1 / R2）を用意する**流れ
 
 ## 説明
 
@@ -53,23 +54,14 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 [サンプルコードをダウンロード](./project.zip)
 :::
 
-### TODO 1: R2 バケットを作る
+### TODO 1: プロジェクト設定を用意する
 
 まず、このセクション用の設定ファイル `wrangler.jsonc` を用意します。テンプレートの
 `wrangler.example.jsonc` を **同じフォルダ上で複製し、複製した方の名前を `wrangler.jsonc` に変更**
 します（このステップでも新しく自分専用のアプリを作ります）。
 
 複製した [wrangler.jsonc](./wrangler.jsonc) を開き、`name` の「あなたの名前」を自分用に書き換えます
-（例: `hitokoto-tanaka-03-r2`）。`database_id` は、次で `npx wrangler d1 create` を実行すると表示される
-この章の D1 の ID を貼り付けます（下のコマンドの出力）。
-
-次に、このフォルダで依存をインストールし、この章で使う D1 と R2 バケットを用意します。
-
-```bash
-npm ci
-npx wrangler d1 create hitokoto-db-03-r2
-npx wrangler r2 bucket create hitokoto-images-03-r2
-```
+（例: `hitokoto-tanaka-03-r2`）。
 
 `wrangler.jsonc` には R2 の binding も入っています。
 
@@ -85,19 +77,15 @@ npx wrangler r2 bucket create hitokoto-images-03-r2
 `binding` の `"BUCKET"` が、Worker のコードで `c.env.BUCKET` として使う名前です。D1 と違い、R2 には
 `database_id` のような ID を貼る作業はありません（バケット名で結びつきます）。
 
-:::warning[R2 の課金について（この章だけ前の章と少し違います）]
-R2 には無料枠があり（ストレージ 10GB/月・Class A 操作 100 万/月・Class B 操作 1000 万/月、
-そして **下り転送は無料**）、このハンズオンの規模なら無料枠に十分収まります。**無料枠内で使う
-限り請求は発生しません**。
-
-ただし R2 を **有効化（サブスクライブ）するときに、クレジットカードなどの支払い方法の登録を求められることがあります**。これは「登録した瞬間に課金される」という意味ではなく、無料枠を超えたときに備えた登録です。
-
-Workers・Pages・D1 は無料プランのまま使えたのに対し、R2 だけはこのカード登録のハードルがある点に注意してください。
-
-**カード登録なしで進めたい場合**は、本番の R2 バケットを作らずに **TODO 4（ローカル確認）まで**を体験できます。
-
-`wrangler dev` / `wrangler pages dev` はローカルにファイルを保存して動くため、実際の R2 バケットがなくても画像つき投稿の保存・表示は確認できます。本番公開（TODO 5）だけスキップする形になります。
+:::notice
+**ローカルで動かすだけなら、ここで `wrangler d1 create` も `wrangler r2 bucket create` も実行しません。** `wrangler dev` は手元の SQLite とローカルのファイル保存（miniflare）を使うので、本番の D1 / R2 を作らなくても TODO 4 まで動きます。本番の D1 / R2 を作り、D1 の `database_id` を書き足すのは、TODO 5（本番に公開する）のときだけです。**カード登録なしで進めたい場合も、TODO 4 のローカル確認まで**を体験できます。
 :::
+
+次に、このフォルダで依存をインストールします。
+
+```bash
+npm ci
+```
 
 ### TODO 2: テーブルに画像のキーを持たせる
 
@@ -115,15 +103,16 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 ```
 
-マイグレーションを適用します（**ローカルと本番は別物** なので、それぞれに流します）。
+ローカルの DB にマイグレーションを適用します（`--local` は手元の開発用 D1 に流します）。
 
 ```bash
 npx wrangler d1 migrations apply hitokoto-db-03-r2 --local
-npx wrangler d1 migrations apply hitokoto-db-03-r2 --remote
 ```
 
+本番側（`--remote`）へは TODO 5 の公開のときに同じ migration を流すので、今はローカルだけで大丈夫です。
+
 :::notice
-このフォルダは単体で動く完成形です。この章で作った D1 に上の migration をそのまま適用すれば、`image_key` 列まで含んだテーブルができあがります。
+このフォルダは単体で動く完成形です。ローカルの D1 に上の migration を適用すれば、`image_key` 列まで含んだテーブルができあがります。
 :::
 
 ### TODO 3: D1 と R2 の使い分けを読む
@@ -199,19 +188,58 @@ npx wrangler d1 execute hitokoto-db-03-r2 --local --command "SELECT id, name, im
 
 ### TODO 5: 本番に公開する
 
+ここで初めて **本番の D1 / R2** を用意します。まず本番のデータベースとバケットを作ります。
+
 ```bash
-npx wrangler deploy
+npx wrangler d1 create hitokoto-db-03-r2
+npx wrangler r2 bucket create hitokoto-images-03-r2
 ```
 
-公開後の Worker から本番の D1 / R2 を使うには、TODO 1〜2 の本番側（`bucket:create` と `db:migrate:remote`）が済んでいる必要があります。
+`wrangler d1 create` の出力に表示される `database_id` を、[wrangler.jsonc](./wrangler.jsonc) の `d1_databases` に **`database_id` 行として書き足します**（TODO 1 の時点では無かった行を追記します）。
+
+```jsonc
+"d1_databases": [
+  {
+    "binding": "DB",
+    "database_name": "hitokoto-db-03-r2",
+    "database_id": "（ここに貼る）",
+    "migrations_dir": "migrations"
+  }
+]
+```
+
+R2 はバケット名で結びつくので、ID を貼る作業はありません。
+
+次に、本番の D1 にマイグレーションを流してから公開します（**ローカルと本番は別物** なので、本番側にも同じ migration を流します）。
+
+```bash
+npx wrangler d1 migrations apply hitokoto-db-03-r2 --remote
+npx wrangler deploy
+```
 
 公開 Worker の URL を `public/main.js` の `API_BASE` に設定し、フロントを再デプロイすれば、画像つきの「ひとことボード」が完成です。
 
 :::warning[本番の R2 バケット作成には、R2 の有効化（支払い方法の登録）が必要です]
-TODO 1 で触れたとおり、R2 だけは有効化の際にカード登録を求められることがあります。
+冒頭の「はじめに」で触れたとおり、R2 だけは有効化の際にカード登録を求められることがあります。R2 には無料枠があり（ストレージ 10GB/月・Class A 操作 100 万/月・Class B 操作 1000 万/月、そして **下り転送は無料**）、このハンズオンの規模なら無料枠に十分収まります。**無料枠内で使う限り請求は発生しません**。
 
 まだ登録していない場合は、ここで `npx wrangler r2 bucket create hitokoto-images-03-r2` が失敗するので、Cloudflare ダッシュボードで R2 を
 有効化してから再実行してください。
+
+未有効化のときは、次のように `Please enable R2 through the Cloudflare Dashboard.`（エラーコード `10042`）が出ます。
+
+```text
+% npx wrangler r2 bucket create hitokoto-images-03-r2
+
+ ⛅️ wrangler 4.112.0
+────────────────────
+Creating bucket 'hitokoto-images-03-r2'...
+
+✘ [ERROR] A request to the Cloudflare API (/accounts/xxxxxxxx/r2/buckets) failed.
+
+  Please enable R2 through the Cloudflare Dashboard. [code: 10042]
+```
+
+この場合は、Cloudflare ダッシュボードの **R2** を開いて有効化（初回は支払い方法の登録を求められます）してから、もう一度同じコマンドを実行してください。
 
 カード登録を避けたい場合は、この TODO 5 をスキップして **TODO 4 のローカル確認まで** で止めておけば大丈夫です。
 :::
