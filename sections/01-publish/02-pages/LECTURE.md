@@ -128,6 +128,24 @@ Pages に公開するとき、wrangler が最低限知りたいのは次の **2 
 [public/index.html](./public/index.html) の見出しやサンプルのひとことを書き換えて、`02-pages`
 フォルダでもう一度デプロイしてみましょう。`./public` を指定し、プロジェクトは **さっき作ったもの**　を選んでください。数十秒で URL の内容が更新されます。
 
+たとえば [public/index.html](./public/index.html) の `<header>` の見出しと説明文（11〜12 行目あたり）を、次のように書き換えてみます。
+
+変更前:
+
+```html
+<h1 class="h3 mb-1">💬 ひとことボード</h1>
+<p class="text-secondary mb-0">みんなが残した「ひとこと」が並ぶ、小さな掲示板です。</p>
+```
+
+変更後:
+
+```html
+<h1 class="h3 mb-1">🎉 わたしのひとことボード</h1>
+<p class="text-secondary mb-0">はじめての Cloudflare Pages で公開してみました！</p>
+```
+
+ファイルを保存したら、もう一度デプロイします。
+
 ```bash
 npx wrangler pages deploy ./public
 ```
