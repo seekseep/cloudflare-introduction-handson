@@ -14,7 +14,7 @@ function renderMessages(messages) {
   list.innerHTML = '';
   for (const m of messages) {
     const li = document.createElement('li');
-    li.className = 'list-group-item border-start border-primary border-3';
+    li.className = 'list-group-item';
     const name = document.createElement('div');
     name.className = 'fw-bold';
     name.textContent = m.name;

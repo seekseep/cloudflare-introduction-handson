@@ -180,6 +180,14 @@ app.use('/api/*', cors({
 
 試しにこの `app.use('/api/*', cors({...}))` の行をコメントアウトして保存し、ブラウザの DevTools（Console / Network タブ）を見ると、CORS エラーで一覧が取得できなくなることが確認できます。
 
+```js
+// app.use('/api/*', cors({
+//   origin: '*',
+//   allowMethods: ['GET', 'POST', 'OPTIONS'],
+//   allowHeaders: ['Content-Type'],
+// }));
+```
+
 確認したら戻しておきましょう。
 
 :::warning[本番では `origin: '*'` を避ける]
@@ -216,5 +224,4 @@ npm run deploy
 
 ## 次の章へ
 
-API ができたら、いよいよ投稿を **保存** します。次は [D1 でデータを保存する](../02-d1/LECTURE.md)
-に進みます。
+API ができたら、いよいよ投稿を **保存** します。次は [D1 でデータを保存する](../02-d1/LECTURE.md)に進みます。
