@@ -20,16 +20,14 @@ docs: true
 
 1. D1 データベースを作り、`wrangler.jsonc` に binding を設定する
 2. `schema.sql` を流してテーブルを作る
-3. Worker から D1 に読み書きするコードを読む
-4. ローカルで投稿が保存されることを確認する
-5. 本番に公開して、インターネット越しに保存できることを確認する
-6. 不要になったリソース（Worker / D1）を削除する
+3. ローカルで投稿が保存されることを確認する
+4. 本番に公開して、インターネット越しに保存できることを確認する
+5. 不要になったリソース（Worker / D1）を削除する
 
 ## 学ぶこと
 
 - データベースの役割（処理が終わってもデータが残る）
 - D1 の基本：`prepare(...).bind(...).all()/run()` で SQL を実行する
-- 値は必ず **プレースホルダ `?` でバインド** する（文字列連結で SQL を作らない＝SQLインジェクション対策）
 - テーブルは `schema.sql` を流して作る（ローカルで開発し、公開時に本番にも同じ SQL を流す）
 
 ## 説明
@@ -114,32 +112,10 @@ To access your new D1 Database in your Worker, add the following snippet to your
 npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
 ```
 
-`--local` は手元の開発用 D1（`wrangler dev` が使う SQLite）にだけ流します。本番側へは TODO 5 の
+`--local` は手元の開発用 D1（`wrangler dev` が使う SQLite）にだけ流します。本番側へは TODO 4 の
 公開のときに同じ SQL をもう一度流すので、今はローカルだけで大丈夫です。
 
-### TODO 3: 読み書きのコードを読む
-
-[src/index.js](./src/index.js) を見ます。一覧の取得（GET）:
-
-```js
-const { results } = await c.env.DB.prepare(
-  'SELECT id, name, body, created_at FROM messages ORDER BY id DESC LIMIT 100',
-).all();
-return c.json(results);
-```
-
-投稿の保存（POST）:
-
-```js
-const result = await c.env.DB.prepare(
-  'INSERT INTO messages (name, body) VALUES (?, ?)',
-).bind(name, body).run();
-```
-
-`?` がプレースホルダで、`.bind(name, body)` の値が安全に当てはめられます。**ユーザーの入力を直接
-SQL 文字列に連結しない** のが鉄則です（連結すると SQL インジェクションの入り口になります）。
-
-### TODO 4: ローカルで保存を確認する
+### TODO 3: ローカルで保存を確認する
 
 ターミナルを 2 つ使います。
 
@@ -159,7 +135,7 @@ npx wrangler pages dev ./public --port 8788
 npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messages"
 ```
 
-### TODO 5: 本番に公開する
+### TODO 4: 本番に公開する
 
 本番の D1 はローカルとは別のデータベースなので、公開前に同じ `schema.sql` を本番側にも流しておきます（`--local` を `--remote` に変えます）。
 
@@ -178,7 +154,7 @@ npx wrangler deploy
 npx wrangler d1 execute hitokoto-db-02-d1 --remote --command "SELECT * FROM messages"
 ```
 
-### TODO 6: 公開したものを削除する
+### TODO 5: 公開したものを削除する
 
 この章で作った Worker と D1 データベースは、不要になったら削除できます。削除の方法は
 **ダッシュボード（画面）** と **CLI（コマンド）** のどちらでも構いません。やりやすい方で消してください。
