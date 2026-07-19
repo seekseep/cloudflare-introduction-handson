@@ -84,11 +84,25 @@ To access your new D1 Database in your Worker, add the following snippet to your
 ✔ Would you like Wrangler to add it on your behalf? … no
 ```
 
+#### 途中で聞かれる質問について
+
+`wrangler d1 create` は DB を作ったあと、「この設定を `wrangler.jsonc` に書き込むのを手伝おうか？」と対話で聞いてきます。
+
+- **Would you like Wrangler to add it on your behalf?**
+  「D1 の設定を、あなたの代わりに `wrangler.jsonc` に自動で追記しようか？」
+- **What binding name would you like to use?**
+  （yes のとき）「コードから呼ぶときの名前（binding）を何にする？」。デフォルトは DB 名がそのまま提案されます。
+- **For local dev, do you want to connect to the remote resource instead of a local resource?**
+  「ローカル開発（`wrangler dev`）のとき、手元の DB ではなく本番の D1 につなぐ？」。yes にすると `"remote": true` が付きます。
+
+この教材では、**1つ目を No** にして、`wrangler.jsonc` は次の手順で自分で書き換えるのをおすすめします（確実で分かりやすいため）。
+
 > [!IMPORTANT]
-> 「Would you like Wrangler to add it on your behalf?」は **No** を選んでください。
-> Yes を選ぶと `binding` 名が `DB` 以外（例: `hitokoto_db_02_d1`）で自動追記され、
-> このコードが参照する `c.env.DB` と食い違って `Cannot read properties of undefined (reading 'prepare')` エラーになります。
-> `wrangler.jsonc` は次の手順で自分で書き換えます。
+> Wrangler に任せる（1つ目を Yes にする）場合は、次の2点を必ず守ってください。
+> - binding 名は **`DB`**（デフォルトのままにしない。コードが `c.env.DB` を参照しているため）
+> - 「connect to the remote resource…」は **No**（ローカル開発は手元の DB を使う。`"remote": true` を付けない）
+>
+> ここを間違える（binding が `DB` 以外・remote が Yes）と、`Cannot read properties of undefined (reading 'prepare')` エラーになります。
 
 実行すると `database_id` が表示されます。これを [wrangler.jsonc](./wrangler.jsonc) の `database_id` に貼り付けます。
 
