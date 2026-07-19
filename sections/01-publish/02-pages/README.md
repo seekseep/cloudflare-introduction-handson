@@ -4,8 +4,6 @@
 です。HTML / CSS / JavaScript だけのシンプルなページを、世界中に配信される URL で公開します。
 スタイルは Bootstrap（CDN）を読み込んで当てています。
 
-レクチャーの内容は [LECTURE.md](./LECTURE.md) を参照してください。
-
 ## 構成
 
 ```text
@@ -16,8 +14,7 @@ package.json   依存（wrangler）
 ```
 
 > このレクチャーは、あえて設定ファイル `wrangler.jsonc` を置いていません。公開に必要な「公開フォルダ」
-> と「プロジェクト名」を、まずコマンドと対話で渡して基本構造を理解します。`wrangler.jsonc` の作り方は
-> LECTURE.md 末尾のコラムで扱います。
+> と「プロジェクト名」を、まずコマンドと対話で渡して基本構造を理解します。
 
 ## 起動方法
 
@@ -47,4 +44,4 @@ npx wrangler pages deploy ./public
 ```
 
 公開 URL（`https://<name>.pages.dev`）が表示されます。`wrangler.jsonc` を作っておくと、次回からは
-`npx wrangler pages deploy` だけで公開できます（詳しくは LECTURE.md のコラム）。
+`npx wrangler pages deploy` だけで公開できます。

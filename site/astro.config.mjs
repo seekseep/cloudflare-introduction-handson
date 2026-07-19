@@ -64,7 +64,7 @@ export default defineConfig({
     starlight({
       title: 'Cloudflare 公開・運用ハンズオン',
       description: 'Cloudflareの無料プランでアプリを公開・運用する流れと、公開時のセキュリティの要点を手を動かして学ぶ',
-      customCss: ['./src/styles/external-links.css', './src/styles/callouts.css', './src/styles/quiz.css', './src/styles/download.css'],
+      customCss: ['./src/styles/readability.css', './src/styles/external-links.css', './src/styles/callouts.css', './src/styles/quiz.css', './src/styles/download.css'],
       head: [
         // ◯✕クイズの client スクリプトを全ページに注入する。
         { tag: 'script', content: quizClient },
