@@ -84,8 +84,23 @@ code .
 ```
 
 開いたら、VSCode 内で[ターミナルを開いて](../01-tools/LECTURE.md)おくと以降の作業がスムーズです。
-今どこにいるかは `pwd`（Windows は `cd`）で確認できます。ここがリポジトリのルート
-（`cloudflare-introduction-handson/`）になっていれば準備完了です。
+今どこにいるかは、次のコマンドで確認できます（以降の各レクチャーでも、コマンドを打つ前に同じ方法で
+確認します）。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+表示された末尾が `.../cloudflare-introduction-handson` になっていれば準備完了です。各レクチャーでは、この
+リポジトリのルートを起点に `cd sections/...` で目的のフォルダへ移動して進めます。
 
 これで、各レクチャーの「`sections/.../` フォルダの中で実行します」という手順を進められます。
 

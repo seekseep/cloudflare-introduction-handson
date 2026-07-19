@@ -37,6 +37,28 @@ docs: true
 
 ### TODO 1: 起動して送信する
 
+:::notice[コマンドの前に：今いるフォルダを確認]
+このレクチャーのコマンドは、すべて `sections/04-appendix/03-turnstile/` フォルダの中で実行します。コマンドを打つ前に、今いる場所を確認しましょう。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+表示された末尾が `.../sections/04-appendix/03-turnstile` になっていれば OK です。違っていたら、リポジトリのルート（`cloudflare-introduction-handson/`）から次で移動します（macOS / Linux / Windows 共通）。
+
+```bash
+cd sections/04-appendix/03-turnstile
+```
+:::
+
 ```bash
 npm install
 cp .dev.vars.example .dev.vars

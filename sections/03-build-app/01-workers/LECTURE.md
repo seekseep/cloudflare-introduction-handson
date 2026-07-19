@@ -65,6 +65,28 @@ Workers は、リクエストを受けてプログラムを実行する **サー
 
 次に、このフォルダで依存をインストールし、Worker を起動します。
 
+:::notice[コマンドの前に：今いるフォルダを確認]
+このレクチャーのコマンドは、すべて `sections/03-build-app/01-workers/` フォルダの中で実行します。コマンドを打つ前に、今いる場所を確認しましょう。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+表示された末尾が `.../sections/03-build-app/01-workers` になっていれば OK です。違っていたら、リポジトリのルート（`cloudflare-introduction-handson/`）から次で移動します（macOS / Linux / Windows 共通）。
+
+```bash
+cd sections/03-build-app/01-workers
+```
+:::
+
 ```bash
 npm install
 npx wrangler dev
@@ -94,6 +116,28 @@ npx wrangler dev
 ### TODO 2: フロントから呼び出す
 
 VS Code から 新たにターミナルを起動して、フロントのアプリケーションを起動します。
+
+:::notice[新しいターミナルでも：今いるフォルダを確認]
+ターミナルを新しく開くと、別の場所（多くはリポジトリのルート）から始まることがあります。コマンドを打つ前に、今いる場所を確認しましょう。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+`.../sections/03-build-app/01-workers` にいなければ、次で移動します（macOS / Linux / Windows 共通）。
+
+```bash
+cd sections/03-build-app/01-workers
+```
+:::
 
 ```bash
 npx wrangler pages dev ./public --port 8788

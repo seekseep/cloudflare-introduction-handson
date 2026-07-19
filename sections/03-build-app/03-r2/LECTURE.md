@@ -52,6 +52,28 @@ R2 は Amazon S3 と互換の API を持ち、最大の特徴は **下り（egre
 
 次に、このフォルダで依存をインストールし、この章で使う D1 と R2 バケットを用意します。
 
+:::notice[コマンドの前に：今いるフォルダを確認]
+このレクチャーのコマンドは、すべて `sections/03-build-app/03-r2/` フォルダの中で実行します。コマンドを打つ前に、今いる場所を確認しましょう。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+表示された末尾が `.../sections/03-build-app/03-r2` になっていれば OK です。違っていたら、リポジトリのルート（`cloudflare-introduction-handson/`）から次で移動します（macOS / Linux / Windows 共通）。
+
+```bash
+cd sections/03-build-app/03-r2
+```
+:::
+
 ```bash
 npm install
 npx wrangler d1 create hitokoto-db-03-r2
@@ -166,6 +188,28 @@ app.get('/api/images/:key', async (c) => {
 ### TODO 4: ローカルで確認する
 
 ターミナルを 2 つ使います。
+
+:::notice[新しいターミナルでも：今いるフォルダを確認]
+2 つ目のターミナルは、別の場所（多くはリポジトリのルート）から始まることがあります。それぞれのターミナルで、コマンドを打つ前に今いる場所を確認しましょう。
+
+**macOS / Linux**
+
+```bash
+pwd
+```
+
+**Windows（PowerShell）**
+
+```powershell
+cd
+```
+
+`.../sections/03-build-app/03-r2` にいなければ、次で移動します（macOS / Linux / Windows 共通）。
+
+```bash
+cd sections/03-build-app/03-r2
+```
+:::
 
 ```bash
 npx wrangler dev
