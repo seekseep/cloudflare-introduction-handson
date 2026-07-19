@@ -37,7 +37,7 @@ Web サイトを公開する最初の一歩として、公開先となる **Clou
 ### TODO 2: wrangler でログインする
 
 ターミナルで以下を実行します（Node.js のセットアップが済んでいる前提。まだの人は
-[Node.js のセットアップ](../../00-environment/01-node/LECTURE.md) を先に）。
+[Node.js のセットアップ](../../00-environment/02-node/LECTURE.md) を先に）。
 
 ```bash
 npx wrangler login

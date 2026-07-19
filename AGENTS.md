@@ -42,7 +42,7 @@ Cloudflare に公開しながらテーマを学ぶ。サイト（`site/`）は `
 番号がサイト sidebar の並び順。`site/astro.config.mjs` の sidebar と対応する。
 
 - **00-environment** … 開発環境の準備
-  - `01-node` Node.js のセットアップ / `02-tools` エディタ・ブラウザ開発者ツール
+  - `01-tools` エディタ・ブラウザ開発者ツール / `02-node` Node.js のセットアップ
 - **01-publish** … フロントを Pages で公開する（ハンズオン）
   - `00-about` このセクションについて / `01-account` アカウント作成・wrangler ログイン /
     `02-pages` Pages で公開 / `03-webapp` ウェブアプリの基本（フロント / API / データ）
