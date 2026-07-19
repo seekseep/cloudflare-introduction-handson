@@ -39,7 +39,7 @@ app.post('/api/messages', async (c) => {
     .bind(name, body)
     .run();
 
-  return c.json({ id: result.meta.last_row_id, name, bod }, 201);
+  return c.json({ id: result.meta.last_row_id, name, body }, 201);
 });
 
 export default app;
