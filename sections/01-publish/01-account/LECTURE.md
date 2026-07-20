@@ -12,19 +12,7 @@ Web サイトを公開する最初の一歩として、公開先となる **Clou
 
 このレクチャーにはコードはありません。アカウントとCLIの準備だけを行います。
 
-## TODO
-
-1. Cloudflare の無料アカウントを作り、メール認証を済ませる
-2. wrangler でログインし、自分のアカウントが選ばれていることを確認する
-
-## 学ぶこと
-
-- Cloudflare のアカウントの作成方法
-- wrangler でログインする方法
-
-## 説明
-
-### TODO 1: アカウントを作る
+## アカウントを作る
 
 1. [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) を開く
 2. **メールの送受信ができるアドレス**（Google アカウントのメールなど）とパスワードを入力して登録
@@ -34,7 +22,7 @@ Web サイトを公開する最初の一歩として、公開先となる **Clou
 
 ログインすると [ダッシュボード](https://dash.cloudflare.com/) が開きます。ここで、これから作るPages / Workers / D1 などのリソースを一覧・確認できます。
 
-### TODO 2: wrangler でログインする
+##　wrangler でログインする
 
 ターミナルで以下を実行します（Node.js のセットアップが済んでいる前提。まだの人は
 [Node.js のセットアップ](../../00-environment/02-node/LECTURE.md) を先に）。

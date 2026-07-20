@@ -16,24 +16,7 @@ docs: true
 
 ![Workerだけだとリクエストごとにデータが消えるが、D1に入れると残る](./images/01-worker-stateless-vs-d1.svg)
 
-## TODO
-
-1. プロジェクト設定（`wrangler.jsonc`）を用意する
-2. ローカルの DB に `schema.sql` を流してテーブルを作る
-3. ローカルで投稿が保存されることを確認する（ここまでリモートのリソース作成は不要）
-4. 本番の D1 を作って公開し、インターネット越しに保存できることを確認する
-5. 不要になったリソース（Worker / D1）を削除する
-
-## 学ぶこと
-
-- データベースの役割（処理が終わってもデータが残る）
-- D1 の基本：`prepare(...).bind(...).all()/run()` で SQL を実行する
-- テーブルは `schema.sql` を流して作る（ローカルで開発し、公開時に本番にも同じ SQL を流す）
-- **まずローカルだけで完成させ、公開のときに本番リソースを用意する**流れ（ローカルは miniflare で動くので D1 の作成は不要）
-
-## 説明
-
-### はじめに: プロジェクトを用意する
+### プロジェクトを用意する
 
 このレクチャーのサンプルを ZIP で配布しています。次の手順で手元に用意してください。
 
@@ -46,7 +29,7 @@ docs: true
 [サンプルコードをダウンロード](./project.zip)
 :::
 
-### TODO 1: プロジェクト設定を用意する
+### プロジェクト設定を用意する
 
 まず、このセクション用の設定ファイル `wrangler.jsonc` を用意します。
 
@@ -75,7 +58,7 @@ docs: true
 npm ci
 ```
 
-### TODO 2: ローカルの DB にテーブルを作る
+### ローカルの DB にテーブルを作る
 
 テーブル定義は [schema.sql](./schema.sql) にあります。この SQL をデータベースに流すことで、投稿を保存するためのテーブルが作られます。
 
@@ -97,16 +80,19 @@ npx wrangler d1 execute hitokoto-db-02-d1 --local --file=./schema.sql
 
 `--local` は手元の開発用 D1 にだけ流します。本番側へは TODO 4 の公開のときに `--remote` で同じ SQL をもう一度流すので、今はローカルだけで大丈夫です。
 
-### TODO 3: ローカルで保存を確認する
+### ローカルで保存を確認する
 
 ターミナルを 2 つ使います。
 
-:::notice
-2 つ目のターミナルも、VSCode でこのフォルダを開いていればこのフォルダの中から始まります。それぞれのターミナルで `pwd`（Windows は `cd`）を実行し、末尾が `.../02-d1` になっていることを確認しておきましょう。
-:::
+１つ目のターミナルではAPIを起動します。
 
 ```bash
 npx wrangler dev
+```
+
+2つ目のターミナルではフロントを起動します。
+
+```
 npx wrangler pages dev ./public --port 8788
 ```
 
@@ -121,7 +107,7 @@ npx wrangler d1 execute hitokoto-db-02-d1 --local --command "SELECT * FROM messa
 ここまでで、**本番の D1 を一切作らずに**「ひとことボード」がローカルで完成しました。公開しないならこの TODO 3 までで大丈夫です。インターネットに公開したい場合だけ、次の TODO 4 に進みます。
 :::
 
-### TODO 4: 本番に公開する
+### 本番に公開する
 
 ここで初めて **本番の D1** を用意します。まず本番のデータベースを作ります。
 
@@ -175,12 +161,14 @@ To access your new D1 Database in your Worker, add the following snippet to your
 ]
 ```
 
-> [!IMPORTANT]
-> Wrangler に任せる（1つ目を Yes にする）場合は、次の2点を必ず守ってください。
-> - binding 名は **`DB`**（デフォルトのままにしない。コードが `c.env.DB` を参照しているため）
-> - 「connect to the remote resource…」は **No**（ローカル開発は手元の DB を使う。`"remote": true` を付けない）
->
-> ここを間違える（binding が `DB` 以外・remote が Yes）と、`Cannot read properties of undefined (reading 'prepare')` エラーになります。
+:::danger[重要]
+Wrangler に任せる（1つ目を Yes にする）場合は、次の2点を必ず守ってください。
+
+- binding 名は **`DB`**（デフォルトのままにしない。コードが `c.env.DB` を参照しているため）
+- 「connect to the remote resource…」は **No**（ローカル開発は手元の DB を使う。`"remote": true` を付けない）
+
+ここを間違える（binding が `DB` 以外・remote が Yes）と、`Cannot read properties of undefined (reading 'prepare')` エラーになります。
+:::
 
 本番の D1 はローカルとは別のデータベースなので、公開前に同じ `schema.sql` を本番側にも流しておきます（`--local` を `--remote` に変えます）。
 
@@ -199,7 +187,7 @@ npx wrangler deploy
 npx wrangler d1 execute hitokoto-db-02-d1 --remote --command "SELECT * FROM messages"
 ```
 
-### TODO 5: 公開したものを削除する
+### 公開したものを削除する
 
 この章で作った Worker と D1 データベースは、不要になったら削除できます。削除の方法は
 **ダッシュボード（画面）** と **CLI（コマンド）** のどちらでも構いません。やりやすい方で消してください。
@@ -208,15 +196,30 @@ npx wrangler d1 execute hitokoto-db-02-d1 --remote --command "SELECT * FROM mess
 削除は元に戻せません。消すのは「このハンズオンで作った練習用のもの」だけにしてください。
 :::
 
-CLI（コマンド）で消す場合は次のとおりです。
+CLI（コマンド）で消す場合は次のとおりです。`wrangler delete` で消えるのは **Worker だけ** です。
+フロント（Pages）と D1 は、それぞれ別のコマンドで消します。
+
+Worker は、`wrangler.jsonc` の `name` に書いた名前で消せます。
 
 ```bash
-npx wrangler delete                      # この章の Worker を削除
-npx wrangler d1 delete hitokoto-db-02-d1       # D1 データベースを削除
+npx wrangler delete
 ```
 
-ダッシュボードから消す場合は、**Workers & Pages** で Worker を、**Storage & Databases → D1** で
-データベースを、それぞれ選んで削除します。
+D1 データベースは、`wrangler d1 delete` で消せます。`database_name` に書いた名前を指定します。
+
+```bash
+npx wrangler d1 delete hitokoto-db-02-d1
+```
+
+フロント（Pages）は Worker とは別のプロジェクトなので、`wrangler pages project delete` で消します。
+プロジェクト名は `wrangler pages project list` で確認できます。
+
+```bash
+npx wrangler pages project delete <プロジェクト名>
+```
+
+ダッシュボードから消す場合は、**Workers & Pages** で Worker と Pages（フロント）を、
+**Storage & Databases → D1** でデータベースを、それぞれ選んで削除します。
 
 :::notice
 各章は独立していて、リソースは章ごとに作り直します。この章で作った D1（`hitokoto-db-02-d1`）は、
