@@ -36,26 +36,46 @@ npm run dev
 
 `http://localhost:8787` を開き、なまえを入れて送信します。Turnstile の確認（テスト用キーなので即成功）を経て、「送信できました」と表示されれば成功です。
 
-フロントは [public/index.html](./public/index.html) です。`<head>` でTurnstile のスクリプトを読み込み、フォーム内に次のウィジェットを置いています。
 
+## フロント側の実装
+
+`public/index.html` の `<head>` 内にある次のコードが、Turnstile のスクリプトを読み込む部分です。
+```html
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+```
+
+`public/index.html` の `<form>` 内にあるこのタグが、Turnstile のウィジェットです。
 ```html
 <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA"></div>
 ```
 
 `data-sitekey` は公開してよい値です。送信時、Turnstile はフォームに`cf-turnstile-response` という隠しフィールド（トークン）を自動で追加します。
 
-## サーバー側の検証を読む
-
-肝心なのはサーバー側です。[src/index.js](./src/index.js) の `/submit` で、受け取ったトークンをCloudflare に問い合わせて検証します。
+## サーバー側の実装
 
 ![ブラウザがトークンを取得しWorkerに送り、WorkerがCloudflareに問い合わせて検証する流れ](./images/01-siteverify-flow.svg)
 
+[src/index.js](./src/index.js) の `/submit` で、受け取ったトークンをCloudflare に問い合わせて検証します。
+
 ```js
-const outcome = await verifyTurnstile(c.env.TURNSTILE_SECRET, token, ip);
-if (!outcome.success) {
-  return c.html(resultPage('検証に失敗しました', false), 403);
-}
-// 成功したときだけ本処理へ
+app.post('/submit', async (c) => {
+  const form = await c.req.formData();
+  const token = form.get('cf-turnstile-response');
+  const name = String(form.get('name') ?? '').trim() || '名無し';
+  const ip = c.req.header('CF-Connecting-IP');
+
+  const outcome = await verifyTurnstile(c.env.TURNSTILE_SECRET, token, ip);
+  if (!outcome.success) {
+    // bot 判定や、トークン切れ・使い回し（timeout-or-duplicate）などで失敗する
+    return c.html(
+      resultPage('Turnstile の検証に失敗しました（bot 判定 / トークン切れなど）。', false),
+      403,
+    );
+  }
+
+  // 検証に成功した場合だけ本処理（ここでは挨拶を返すだけ）。
+  return c.html(resultPage(`ようこそ、${name} さん。人間として確認できました。`, true));
+});
 ```
 
 `siteverify` は `secret` と `token` を Cloudflare に送り、`{ success: true/false }` を返します。**この検証をサボって「ウィジェットを置いただけ」では、bot は直接 `/submit` を叩けるので無意味** です。必ずサーバー側で検証します。
