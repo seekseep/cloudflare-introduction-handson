@@ -149,10 +149,6 @@ app.get('/api/images/:key', async (c) => {
 
 ターミナルを 2 つ使います。
 
-:::notice
-2 つ目のターミナルも、VSCode でこのフォルダを開いていればこのフォルダの中から始まります。それぞれのターミナルで `pwd`（Windows は `cd`）を実行し、末尾が `.../03-r2` になっていることを確認しておきましょう。
-:::
-
 ```bash
 npx wrangler dev
 npx wrangler pages dev ./public --port 8788

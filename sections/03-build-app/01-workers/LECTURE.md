@@ -92,10 +92,6 @@ npx wrangler dev
 
 VS Code から 新たにターミナルを起動して、フロントのアプリケーションを起動します。
 
-:::notice
-VSCode でこのフォルダを開いていれば、新しく開いたターミナルもこのフォルダの中から始まります。`pwd`（Windows は `cd`）で末尾が `.../01-workers` になっていることを確認しておきましょう。
-:::
-
 ```bash
 npx wrangler pages dev ./public --port 8788
 ```
