@@ -9,7 +9,7 @@
   padding: 0.85rem 1.5rem;
   border-radius: 0.5rem;
   background-color: var(--sl-color-accent);
-  color: var(--sl-color-white);
+  color: #fff;
   font-size: var(--sl-text-lg);
   font-weight: 700;
   line-height: 1.2;
@@ -20,7 +20,7 @@
 
 .download-button:hover {
   background-color: var(--sl-color-accent-high);
-  color: var(--sl-color-white);
+  color: #fff;
   text-decoration: none;
 }
 
